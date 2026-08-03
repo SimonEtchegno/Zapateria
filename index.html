@@ -862,58 +862,132 @@
       background: var(--white);
       border-radius: 24px;
       border: 1px solid var(--line);
-      width: min(1180px, 96vw);
-      height: min(880px, 92vh);
+      width: min(1320px, 98vw);
+      height: min(900px, 94vh);
       display: flex;
-      flex-direction: column;
+      flex-direction: row;
       box-shadow: 0 24px 60px rgba(0,0,0,0.28);
       overflow: hidden;
     }
-    .admin-head {
-      padding: 1.1rem 1.6rem;
-      background: var(--ink);
+
+    /* Left Sidebar System */
+    .admin-sidebar {
+      width: 270px;
+      background: #191615;
       color: #fff;
+      display: flex;
+      flex-direction: column;
+      border-right: 1px solid rgba(255,255,255,0.08);
+      flex-shrink: 0;
+    }
+    .admin-sidebar-head {
+      padding: 1.4rem 1.2rem;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+    }
+    .admin-sidebar-head h3 {
+      font-family: var(--display);
+      font-size: 1.3rem;
+      color: #fff;
+      margin: 0;
+      line-height: 1.1;
+    }
+    .admin-sidebar-nav {
+      flex: 1;
+      padding: 1rem 0.8rem;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 0.2rem;
+    }
+    .sidebar-group-label {
+      font-size: 0.68rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.4);
+      font-weight: 700;
+      padding: 0.6rem 0.8rem 0.2rem;
+    }
+    .sidebar-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.65rem 0.9rem;
+      border-radius: 12px;
+      color: rgba(255,255,255,0.75);
+      font-size: 0.88rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      user-select: none;
+    }
+    .sidebar-item:hover {
+      background: rgba(255,255,255,0.1);
+      color: #fff;
+    }
+    .sidebar-item.active {
+      background: var(--accent);
+      color: #fff;
+      font-weight: 700;
+      box-shadow: 0 4px 12px rgba(184, 75, 92, 0.35);
+    }
+    .sidebar-submenu {
+      display: flex;
+      flex-direction: column;
+      gap: 0.15rem;
+      padding-left: 1.2rem;
+      margin-top: 0.15rem;
+      margin-bottom: 0.35rem;
+    }
+    .sidebar-subitem {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.45rem 0.8rem;
+      border-radius: 8px;
+      color: rgba(255,255,255,0.65);
+      font-size: 0.82rem;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    .sidebar-subitem:hover {
+      color: #fff;
+      background: rgba(255,255,255,0.08);
+    }
+    .sidebar-subitem.active {
+      font-weight: 700;
+      color: #fff;
+      background: rgba(255,255,255,0.15);
+    }
+
+    .admin-sidebar-foot {
+      padding: 1rem 1.2rem;
+      border-top: 1px solid rgba(255,255,255,0.08);
       display: flex;
       align-items: center;
       justify-content: space-between;
     }
-    .admin-head h3 {
-      font-family: var(--display);
-      font-size: 1.6rem;
-      font-weight: 600;
-    }
 
-    /* Admin Tabs Nav */
-    .admin-tabs {
-      background: var(--bg-soft);
+    /* Main Content Area */
+    .admin-main-container {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      background: var(--bg);
+    }
+    .admin-main-header {
+      padding: 1rem 1.6rem;
+      background: var(--white);
       border-bottom: 1px solid var(--line);
       display: flex;
-      gap: 0.4rem;
-      padding: 0.6rem 1.2rem;
-      overflow-x: auto;
+      align-items: center;
+      justify-content: space-between;
     }
-    .admin-tab {
-      padding: 0.55rem 1.1rem;
-      border-radius: 999px;
-      font-size: 0.86rem;
-      font-weight: 600;
-      color: var(--muted);
-      white-space: nowrap;
-      transition: all 0.2s ease;
-      cursor: pointer;
-    }
-    .admin-tab:hover {
-      color: var(--ink);
-      background: rgba(255, 255, 255, 0.6);
-    }
-    .admin-tab.active {
-      background: var(--ink);
-      color: var(--white);
-      box-shadow: 0 2px 8px rgba(0,0,0,0.12);
-    }
-
     .admin-body {
-      padding: 1.4rem 1.6rem;
+      padding: 1.6rem;
       overflow-y: auto;
       flex: 1;
       display: flex;
@@ -1376,29 +1450,105 @@
   <!-- Modal Admin Dashboard -->
   <div class="modal-admin" id="adminModal">
     <div class="modal-admin-content">
-      <div class="admin-head">
-        <div>
-          <h3>Panel de Administración</h3>
-          <span style="font-size:0.8rem;color:#ccc">Calzado Ivonne · Sistema Integral de Gestión</span>
+      <!-- Left Sidebar System -->
+      <aside class="admin-sidebar">
+        <div class="admin-sidebar-head">
+          <img src="https://instagram.faep7-1.fna.fbcdn.net/v/t51.2885-19/279901593_1153568112089403_2231885290381537430_n.jpg?efg=eyJ2ZW5jb2RlX3RhZyI6InByb2ZpbGVfcGljLmRqYW5nby4xMDgwLmMyIn0&_nc_ht=instagram.faep7-1.fna.fbcdn.net&_nc_cat=103&_nc_oc=Q6cZ2gFvgmGCAOGAbi7htPtSzNPOJhlqykVwvnhoi3d7uL5Jj5bLxH3MuiDiEqb8bdFhUOs&_nc_ohc=ftyAm17MRsMQ7kNvwFABaqO&_nc_gid=HGp4p0-mvu26MFcroWqbkg&edm=AP4sbd4BAAAA&ccb=7-5&oh=00_AQGYMxnAXzb8HDRK_WgvX6YWekCN2dbWKvV3wS4_vUCGKg&oe=6A769012&_nc_sid=7a9f4b" alt="Logo" style="width:36px;height:36px;border-radius:50%;object-fit:cover;border:1px solid rgba(255,255,255,0.2)" />
+          <div>
+            <h3>Calzado Ivonne</h3>
+            <small style="color:rgba(255,255,255,0.5)">Panel de Administración</small>
+          </div>
         </div>
-        <button class="close-btn" id="closeAdminBtn" style="color:white;border-color:#555">✕</button>
-      </div>
 
-      <!-- Navigation Tabs Bar -->
-      <div class="admin-tabs" id="adminTabsNav">
-        <button class="admin-tab active" data-tab="dash">📊 1. Dashboard</button>
-        <button class="admin-tab" data-tab="products">📦 2. Productos</button>
-        <button class="admin-tab" data-tab="categories">🏷️ 3. Categorías</button>
-        <button class="admin-tab" data-tab="brands">👟 4. Marcas</button>
-        <button class="admin-tab" data-tab="inventory">📋 5. Inventario</button>
-        <button class="admin-tab" data-tab="customers">👥 6. Clientes</button>
-        <button class="admin-tab" data-tab="promos">🏷️ 7. Promociones</button>
-        <button class="admin-tab" data-tab="reports">📈 8. Reportes & Exportar</button>
-        <button class="admin-tab" data-tab="gallery">🖼️ 9. Imágenes</button>
-        <button class="admin-tab" data-tab="notifs">🔔 10. Notificaciones <span id="notifBadgeCount" class="cart-count" style="position:static;display:inline-flex;margin-left:0.3rem;background:var(--accent)">4</span></button>
-      </div>
+        <nav class="admin-sidebar-nav" id="adminSidebarNav">
+          <!-- Main Item -->
+          <div class="sidebar-item active" data-nav="dash">
+            <span>📊 Dashboard</span>
+          </div>
 
-      <div class="admin-body">
+          <!-- Group: Productos -->
+          <div class="sidebar-group-label">Productos & Inventario</div>
+          <div class="sidebar-item" data-nav="products-parent" onclick="toggleSubmenu('productsSubmenu')">
+            <span>📦 Productos</span>
+            <small style="font-size:0.7rem">▼</small>
+          </div>
+          <div class="sidebar-submenu" id="productsSubmenu">
+            <div class="sidebar-subitem" data-nav="products-list">📄 Listado</div>
+            <div class="sidebar-subitem" data-nav="products-add">➕ Agregar</div>
+            <div class="sidebar-subitem" data-nav="categories">🏷️ Categorías</div>
+            <div class="sidebar-subitem" data-nav="brands">👟 Marcas</div>
+            <div class="sidebar-subitem" data-nav="inventory">📋 Inventario</div>
+          </div>
+
+          <!-- Group: Pedidos -->
+          <div class="sidebar-group-label">Gestión de Ventas</div>
+          <div class="sidebar-item" data-nav="orders-parent" onclick="toggleSubmenu('ordersSubmenu')">
+            <span>🛍️ Pedidos</span>
+            <small style="font-size:0.7rem">▼</small>
+          </div>
+          <div class="sidebar-submenu" id="ordersSubmenu">
+            <div class="sidebar-subitem" data-nav="orders-all">📥 Todos</div>
+            <div class="sidebar-subitem" data-nav="orders-pending">⏳ Pendientes</div>
+            <div class="sidebar-subitem" data-nav="orders-prep">📦 En preparación</div>
+            <div class="sidebar-subitem" data-nav="orders-shipped">🚚 Enviados</div>
+            <div class="sidebar-subitem" data-nav="orders-delivered">✅ Entregados</div>
+          </div>
+
+          <!-- Group: Gestión -->
+          <div class="sidebar-group-label">Clientes & Márketing</div>
+          <div class="sidebar-item" data-nav="customers">
+            <span>👥 Clientes</span>
+          </div>
+          <div class="sidebar-item" data-nav="promos">
+            <span>🎟️ Promociones</span>
+          </div>
+          <div class="sidebar-item" data-nav="reports">
+            <span>📈 Reportes</span>
+          </div>
+          <div class="sidebar-item" data-nav="gallery">
+            <span>🖼️ Imágenes</span>
+          </div>
+
+          <!-- Group: Configuración -->
+          <div class="sidebar-group-label">Ajustes & Usuarios</div>
+          <div class="sidebar-item" data-nav="users">
+            <span>🔑 Usuarios</span>
+          </div>
+          <div class="sidebar-item" data-nav="settings">
+            <span>⚙️ Configuración</span>
+          </div>
+          <div class="sidebar-item" data-nav="profile">
+            <span>👤 Perfil</span>
+          </div>
+        </nav>
+
+        <div class="admin-sidebar-foot">
+          <div style="display:flex;align-items:center;gap:0.6rem">
+            <div style="width:32px;height:32px;border-radius:50%;background:var(--accent);display:grid;place-items:center;font-weight:700;font-size:0.8rem;color:#fff">A</div>
+            <div style="line-height:1.2">
+              <strong style="font-size:0.82rem;color:#fff;display:block">Admin Ivonne</strong>
+              <small style="color:rgba(255,255,255,0.5);font-size:0.7rem">Super Admin</small>
+            </div>
+          </div>
+        </div>
+      </aside>
+
+      <!-- Right Main Panel Container -->
+      <div class="admin-main-container">
+        <header class="admin-main-header">
+          <div>
+            <h4 id="adminActiveSectionTitle" style="font-family:var(--display);font-size:1.35rem;margin:0;color:var(--ink)">📊 Dashboard</h4>
+            <span style="font-size:0.78rem;color:var(--muted)">Sistema Integral de Gestión · Calzado Ivonne</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:0.8rem">
+            <button class="btn btn-outline btn-sm" id="btnAdminNotifQuick" onclick="switchAdminTab('notifs')">
+              🔔 Notificaciones <span id="notifBadgeCount" class="cart-count" style="position:static;display:inline-flex;margin-left:0.3rem;background:var(--accent)">4</span>
+            </button>
+            <button class="close-btn" id="closeAdminBtn" style="color:var(--ink);border-color:var(--line)">✕</button>
+          </div>
+        </header>
+
+        <div class="admin-body">
         <!-- ==================== TAB 1: DASHBOARD ==================== -->
         <div id="tabDash" class="tab-pane">
           <!-- KPIs Top Grid -->
@@ -2091,6 +2241,140 @@
             <div id="adminNotificationsList" style="display:flex;flex-direction:column;gap:0.8rem"></div>
           </div>
         </div>
+
+        <!-- ==================== PEDIDOS MODULE ==================== -->
+        <div id="tabOrders" class="tab-pane" style="display:none">
+          <div class="admin-toolbar" style="margin-bottom:1.2rem">
+            <div style="display:flex;gap:0.6rem;flex:1;flex-wrap:wrap">
+              <input type="text" id="orderSearchInput" class="form-control" placeholder="🔍 Buscar por N° Pedido, cliente o teléfono..." style="max-width:320px" />
+              <select id="orderFilterStatus" class="form-control" style="max-width:200px">
+                <option value="all">📥 Todos los pedidos</option>
+                <option value="Pendiente">⏳ Pendientes</option>
+                <option value="En preparación">📦 En preparación</option>
+                <option value="Enviado">🚚 Enviados</option>
+                <option value="Entregado">✅ Entregados</option>
+              </select>
+            </div>
+            <button class="btn btn-outline" onclick="renderAdminOrders()">🔄 Actualizar Listado</button>
+          </div>
+
+          <div class="widget-box">
+            <div class="widget-title" id="orderTableTitle">Gestión de Pedidos</div>
+            <div style="overflow-x:auto">
+              <table class="admin-table">
+                <thead>
+                  <tr>
+                    <th>N° Pedido</th>
+                    <th>Fecha</th>
+                    <th>Cliente</th>
+                    <th>Productos / Total</th>
+                    <th>Estado Actual</th>
+                    <th style="text-align:right">Cambiar Estado / Acciones</th>
+                  </tr>
+                </thead>
+                <tbody id="adminOrdersTableBody"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- ==================== USUARIOS MODULE ==================== -->
+        <div id="tabUsers" class="tab-pane" style="display:none">
+          <div class="admin-toolbar" style="margin-bottom:1.2rem">
+            <div>
+              <strong style="font-size:1.1rem">Gestión de Usuarios del Sistema</strong>
+              <p style="font-size:0.8rem;color:var(--muted);margin:0">Administrá accesos y roles del personal del local.</p>
+            </div>
+            <button class="btn btn-dark" id="btnNewUser">＋ Nuevo Usuario</button>
+          </div>
+
+          <div class="widget-box">
+            <div class="widget-title">Usuarios Administradores y Vendedores</div>
+            <table class="admin-table">
+              <thead>
+                <tr>
+                  <th>Usuario</th>
+                  <th>Rol / Permisos</th>
+                  <th>Email</th>
+                  <th>Último Acceso</th>
+                  <th>Estado</th>
+                  <th style="text-align:right">Acciones</th>
+                </tr>
+              </thead>
+              <tbody id="adminUsersTableBody"></tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- ==================== CONFIGURACIÓN MODULE ==================== -->
+        <div id="tabSettings" class="tab-pane" style="display:none">
+          <div class="widget-box" style="max-width:800px">
+            <div class="widget-title">⚙️ Configuración General de la Tienda</div>
+            <form id="adminSettingsForm">
+              <div class="form-grid">
+                <div class="form-group">
+                  <label>Nombre de la Zapatería</label>
+                  <input type="text" id="cfgStoreName" class="form-control" value="Calzado Ivonne" required />
+                </div>
+                <div class="form-group">
+                  <label>Teléfono de WhatsApp (Pedidos)</label>
+                  <input type="text" id="cfgWhatsapp" class="form-control" value="5492923456789" required />
+                </div>
+                <div class="form-group">
+                  <label>Costo de Envío Estándar ($)</label>
+                  <input type="number" id="cfgShipCost" class="form-control" value="3500" required />
+                </div>
+                <div class="form-group">
+                  <label>Monto Mínimo Envío Gratis ($)</label>
+                  <input type="number" id="cfgFreeShipMin" class="form-control" value="80000" required />
+                </div>
+                <div class="form-group full">
+                  <label>Dirección del Local Físico</label>
+                  <input type="text" id="cfgAddress" class="form-control" value="Av. San Martín 450, Pigüé, Buenos Aires" />
+                </div>
+                <div class="form-group full">
+                  <label>Mensaje Predeterminado de Pedido WhatsApp</label>
+                  <textarea id="cfgWspMsg" class="form-control" rows="3">Hola Calzado Ivonne! Quisiera confirmar la compra de mi carrito:</textarea>
+                </div>
+              </div>
+              <div style="display:flex;justify-content:flex-end;margin-top:1.2rem">
+                <button type="submit" class="btn btn-dark">💾 Guardar Configuración</button>
+              </div>
+            </form>
+          </div>
+        </div>
+
+        <!-- ==================== PERFIL MODULE ==================== -->
+        <div id="tabProfile" class="tab-pane" style="display:none">
+          <div class="widget-box" style="max-width:600px">
+            <div style="display:flex;align-items:center;gap:1rem;margin-bottom:1.4rem">
+              <div style="width:64px;height:64px;border-radius:50%;background:var(--ink);color:#fff;display:grid;place-items:center;font-size:1.8rem;font-weight:700">A</div>
+              <div>
+                <h3 style="margin:0;font-family:var(--display)">Administrador Ivonne</h3>
+                <span class="badge brand">Super Administrador</span>
+              </div>
+            </div>
+            <form id="adminProfileForm">
+              <div class="form-group" style="margin-bottom:1rem">
+                <label>Nombre Completo</label>
+                <input type="text" id="profName" class="form-control" value="Administrador General" required />
+              </div>
+              <div class="form-group" style="margin-bottom:1rem">
+                <label>Email de Usuario</label>
+                <input type="email" id="profEmail" class="form-control" value="admin@calzadoivonne.com" required />
+              </div>
+              <div class="form-group" style="margin-bottom:1rem">
+                <label>Nueva Contraseña</label>
+                <input type="password" id="profPass" class="form-control" placeholder="Dejar en blanco para mantener la actual" />
+              </div>
+              <div style="display:flex;justify-content:flex-end;margin-top:1.2rem">
+                <button type="submit" class="btn btn-dark">Actualizar Perfil</button>
+              </div>
+            </form>
+          </div>
+        </div>
+
+      </div>
     </div>
   </div>
 
@@ -3255,47 +3539,243 @@
     function saveGalleryStorage() { localStorage.setItem("ivonne_gallery", JSON.stringify(gallery)); }
     function saveNotificationsStorage() { localStorage.setItem("ivonne_notifications", JSON.stringify(notifications)); }
 
-    // Cambiador de Pestañas (10 Tabs)
-    function switchAdminTab(tabName) {
-      document.querySelectorAll(".admin-tab").forEach((b) => {
-        b.classList.toggle("active", b.dataset.tab === tabName);
-      });
+    const defaultUsers = [
+      { id: 1, name: "Ivonne Admin", email: "admin@calzadoivonne.com", role: "Super Admin", lastLogin: "Hoy, 13:10 hs", status: "Activo" },
+      { id: 2, name: "Luciana Vendedora", email: "ventas@calzadoivonne.com", role: "Vendedor", lastLogin: "Ayer, 18:45 hs", status: "Activo" },
+      { id: 3, name: "Marcos Inventario", email: "deposito@calzadoivonne.com", role: "Gestor Depósito", lastLogin: "01/08/2026", status: "Activo" }
+    ];
+
+    function loadUsers() {
+      const stored = localStorage.getItem("ivonne_users");
+      if (stored) { try { return JSON.parse(stored); } catch (e) {} }
+      return [...defaultUsers];
+    }
+
+    let users = loadUsers();
+    function saveUsersStorage() { localStorage.setItem("ivonne_users", JSON.stringify(users)); }
+
+    // Submenu Toggle Handler
+    window.toggleSubmenu = function(id) {
+      const sub = document.getElementById(id);
+      if (!sub) return;
+      const isHidden = getComputedStyle(sub).display === "none";
+      sub.style.display = isHidden ? "flex" : "none";
+    };
+
+    // Sidebar & Tab Switcher System
+    function switchAdminTab(targetPane, titleText, filterParam) {
+      if (titleText) {
+        document.getElementById("adminActiveSectionTitle").textContent = titleText;
+      }
 
       document.querySelectorAll(".tab-pane").forEach((pane) => {
         pane.style.display = "none";
       });
 
-      if (tabName === "dash") {
+      if (targetPane === "dash") {
         document.getElementById("tabDash").style.display = "block";
         renderDashboard();
-      } else if (tabName === "products") {
+      } else if (targetPane === "products") {
         document.getElementById("tabProducts").style.display = "block";
         renderAdminProducts();
-      } else if (tabName === "categories") {
+      } else if (targetPane === "categories") {
         document.getElementById("tabCategories").style.display = "block";
         renderAdminCategories();
-      } else if (tabName === "brands") {
+      } else if (targetPane === "brands") {
         document.getElementById("tabBrands").style.display = "block";
         renderAdminBrands();
-      } else if (tabName === "inventory") {
+      } else if (targetPane === "inventory") {
         document.getElementById("tabInventory").style.display = "block";
         renderAdminInventory();
-      } else if (tabName === "customers") {
+      } else if (targetPane === "orders") {
+        document.getElementById("tabOrders").style.display = "block";
+        if (filterParam) {
+          document.getElementById("orderFilterStatus").value = filterParam;
+        }
+        renderAdminOrders();
+      } else if (targetPane === "customers") {
         document.getElementById("tabCustomers").style.display = "block";
         renderAdminCustomers();
-      } else if (tabName === "promos") {
+      } else if (targetPane === "promos") {
         document.getElementById("tabPromos").style.display = "block";
         renderAdminPromos();
-      } else if (tabName === "reports") {
+      } else if (targetPane === "reports") {
         document.getElementById("tabReports").style.display = "block";
         renderAdminReports();
-      } else if (tabName === "gallery") {
+      } else if (targetPane === "gallery") {
         document.getElementById("tabGallery").style.display = "block";
         renderAdminGallery();
-      } else if (tabName === "notifs") {
+      } else if (targetPane === "users") {
+        document.getElementById("tabUsers").style.display = "block";
+        renderAdminUsers();
+      } else if (targetPane === "settings") {
+        document.getElementById("tabSettings").style.display = "block";
+      } else if (targetPane === "profile") {
+        document.getElementById("tabProfile").style.display = "block";
+      } else if (targetPane === "notifs") {
         document.getElementById("tabNotifs").style.display = "block";
         renderAdminNotifications();
       }
+    }
+
+    // Connect Sidebar click listeners
+    document.querySelectorAll("[data-nav]").forEach(item => {
+      item.addEventListener("click", (e) => {
+        const nav = item.dataset.nav;
+        if (nav === "products-parent" || nav === "orders-parent") return;
+
+        document.querySelectorAll(".sidebar-item, .sidebar-subitem").forEach(i => i.classList.remove("active"));
+        item.classList.add("active");
+
+        if (nav === "dash") switchAdminTab("dash", "📊 Dashboard");
+        else if (nav === "products-list") switchAdminTab("products", "📦 Productos · Listado");
+        else if (nav === "products-add") {
+          switchAdminTab("products", "📦 Productos · Agregar");
+          document.getElementById("btnNewProduct").click();
+        }
+        else if (nav === "categories") switchAdminTab("categories", "🏷️ Categorías");
+        else if (nav === "brands") switchAdminTab("brands", "👟 Marcas");
+        else if (nav === "inventory") switchAdminTab("inventory", "📋 Inventario");
+        else if (nav === "orders-all") switchAdminTab("orders", "🛍️ Pedidos · Todos", "all");
+        else if (nav === "orders-pending") switchAdminTab("orders", "🛍️ Pedidos · Pendientes", "Pendiente");
+        else if (nav === "orders-prep") switchAdminTab("orders", "🛍️ Pedidos · En preparación", "En preparación");
+        else if (nav === "orders-shipped") switchAdminTab("orders", "🛍️ Pedidos · Enviados", "Enviado");
+        else if (nav === "orders-delivered") switchAdminTab("orders", "🛍️ Pedidos · Entregados", "Entregado");
+        else if (nav === "customers") switchAdminTab("customers", "👥 Clientes");
+        else if (nav === "promos") switchAdminTab("promos", "🎟️ Promociones");
+        else if (nav === "reports") switchAdminTab("reports", "📈 Reportes");
+        else if (nav === "gallery") switchAdminTab("gallery", "🖼️ Imágenes");
+        else if (nav === "users") switchAdminTab("users", "🔑 Usuarios");
+        else if (nav === "settings") switchAdminTab("settings", "⚙️ Configuración");
+        else if (nav === "profile") switchAdminTab("profile", "👤 Perfil");
+      });
+    });
+
+    // -----------------------------------------------
+    // GESTIÓN DE PEDIDOS POR ESTADOS
+    // -----------------------------------------------
+    const orderSearchInput = document.getElementById("orderSearchInput");
+    const orderFilterStatus = document.getElementById("orderFilterStatus");
+    const adminOrdersTableBody = document.getElementById("adminOrdersTableBody");
+
+    function renderAdminOrders() {
+      const q = (orderSearchInput ? orderSearchInput.value : "").trim().toLowerCase();
+      const st = orderFilterStatus ? orderFilterStatus.value : "all";
+
+      const filtered = orders.filter(o => {
+        const matchSearch = !q || String(o.id).includes(q) || o.customer.toLowerCase().includes(q);
+        const matchStatus = st === "all" || o.status === st;
+        return matchSearch && matchStatus;
+      });
+
+      adminOrdersTableBody.innerHTML = filtered.map(o => `
+        <tr>
+          <td><strong>#${o.id}</strong></td>
+          <td><small style="color:var(--muted)">${o.date}</small></td>
+          <td><strong>${o.customer}</strong></td>
+          <td>
+            <small style="display:block">${o.items}</small>
+            <strong style="color:var(--ok)">${money(o.total)}</strong>
+          </td>
+          <td>
+            <span class="status-badge ${o.status === 'Entregado' ? 'active' : o.status === 'Enviado' ? 'brand' : 'new'}">
+              ${o.status}
+            </span>
+          </td>
+          <td style="text-align:right">
+            <div style="display:flex;gap:0.3rem;justify-content:flex-end">
+              ${o.status !== 'En preparación' ? `<button class="btn btn-outline btn-sm" onclick="changeOrderStatus(${o.id}, 'En preparación')">📦 Preparar</button>` : ''}
+              ${o.status !== 'Enviado' ? `<button class="btn btn-outline btn-sm" onclick="changeOrderStatus(${o.id}, 'Enviado')">🚚 Enviar</button>` : ''}
+              ${o.status !== 'Entregado' ? `<button class="btn btn-dark btn-sm" onclick="changeOrderStatus(${o.id}, 'Entregado')">✅ Entregar</button>` : ''}
+            </div>
+          </td>
+        </tr>
+      `).join("");
+    }
+
+    if (orderSearchInput && orderFilterStatus) {
+      [orderSearchInput, orderFilterStatus].forEach(el => {
+        el.addEventListener("input", renderAdminOrders);
+        el.addEventListener("change", renderAdminOrders);
+      });
+    }
+
+    window.changeOrderStatus = function(orderId, newStatus) {
+      const o = orders.find(x => x.id === orderId);
+      if (!o) return;
+      o.status = newStatus;
+      saveOrdersStorage();
+      renderAdminOrders();
+      renderDashboard();
+      showToast(`Pedido #${orderId} actualizado a '${newStatus}'`);
+    };
+
+    // -----------------------------------------------
+    // GESTIÓN DE USUARIOS
+    // -----------------------------------------------
+    const btnNewUser = document.getElementById("btnNewUser");
+    const adminUsersTableBody = document.getElementById("adminUsersTableBody");
+
+    function renderAdminUsers() {
+      adminUsersTableBody.innerHTML = users.map(u => `
+        <tr>
+          <td>
+            <strong>${u.name}</strong><br/>
+            <small style="color:var(--muted)">ID: #${u.id}</small>
+          </td>
+          <td><span class="badge brand">${u.role}</span></td>
+          <td>${u.email}</td>
+          <td><small style="color:var(--muted)">${u.lastLogin}</small></td>
+          <td><span class="status-badge active">🟢 ${u.status}</span></td>
+          <td style="text-align:right">
+            <button class="btn btn-outline btn-sm" onclick="alert('Editar usuario ${u.name}')">✏️ Editar</button>
+            <button class="btn btn-danger btn-sm" onclick="deleteUser(${u.id})">🗑️ Eliminar</button>
+          </td>
+        </tr>
+      `).join("");
+    }
+
+    if (btnNewUser) {
+      btnNewUser.addEventListener("click", () => {
+        const name = prompt("Nombre y Apellido del nuevo usuario:");
+        if (!name) return;
+        const email = prompt("Email:");
+        if (!email) return;
+        const role = prompt("Rol (Super Admin / Vendedor / Gestor Depósito):", "Vendedor");
+
+        const newId = users.length ? Math.max(...users.map(u => u.id)) + 1 : 1;
+        users.push({ id: newId, name, email, role: role || "Vendedor", lastLogin: "Nuevo registrado", status: "Activo" });
+        saveUsersStorage();
+        renderAdminUsers();
+        showToast("Usuario creado con éxito");
+      });
+    }
+
+    window.deleteUser = function(id) {
+      if (confirm("¿Estás seguro de eliminar este usuario?")) {
+        users = users.filter(u => u.id !== id);
+        saveUsersStorage();
+        renderAdminUsers();
+        showToast("Usuario eliminado");
+      }
+    };
+
+    // Formulario de Configuración
+    const adminSettingsForm = document.getElementById("adminSettingsForm");
+    if (adminSettingsForm) {
+      adminSettingsForm.addEventListener("submit", (e) => {
+        e.preventDefault();
+        showToast("Configuración de la tienda guardada correctamente");
+      });
+    }
+
+    // Formulario de Perfil
+    const adminProfileForm = document.getElementById("adminProfileForm");
+    if (adminProfileForm) {
+      adminProfileForm.addEventListener("submit", (e) => {
+        e.preventDefault();
+        showToast("Perfil de usuario actualizado");
+      });
     }
 
 
