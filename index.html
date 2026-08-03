@@ -325,7 +325,89 @@
       font-weight: 600;
       letter-spacing: -0.02em;
     }
-    .section-head p { color: var(--muted); max-width: 28rem; }
+    /* Store Filter & Search Bar */
+    .store-filter-bar {
+      display: flex;
+      gap: 1rem;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      margin-bottom: 1.2rem;
+      background: var(--white);
+      padding: 0.8rem 1.2rem;
+      border-radius: 20px;
+      border: 1px solid var(--line);
+      box-shadow: var(--shadow);
+    }
+    .search-input-wrapper {
+      position: relative;
+      flex: 1;
+      min-width: 260px;
+      display: flex;
+      align-items: center;
+    }
+    .search-icon {
+      position: absolute;
+      left: 14px;
+      color: var(--muted);
+      pointer-events: none;
+    }
+    .store-search-input {
+      width: 100%;
+      padding: 0.65rem 2.2rem 0.65rem 2.5rem;
+      border-radius: 12px;
+      border: 1px solid var(--line);
+      background: var(--bg);
+      font: inherit;
+      font-size: 0.9rem;
+      color: var(--ink);
+      transition: all 0.2s ease;
+    }
+    .store-search-input:focus {
+      outline: none;
+      border-color: var(--ink);
+      background: var(--white);
+      box-shadow: 0 0 0 3px rgba(28, 25, 23, 0.08);
+    }
+    .clear-search-btn {
+      position: absolute;
+      right: 12px;
+      font-size: 0.85rem;
+      color: var(--muted);
+      padding: 2px 6px;
+      border-radius: 50%;
+      line-height: 1;
+    }
+    .clear-search-btn:hover {
+      color: var(--ink);
+      background: rgba(0,0,0,0.05);
+    }
+    .size-filter-wrapper {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .filter-label {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--muted);
+    }
+    .store-size-select {
+      padding: 0.65rem 1rem;
+      border-radius: 12px;
+      border: 1px solid var(--line);
+      background: var(--bg);
+      font: inherit;
+      font-size: 0.88rem;
+      font-weight: 600;
+      color: var(--ink);
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    .store-size-select:focus, .store-size-select:hover {
+      border-color: var(--ink);
+      background: var(--white);
+    }
 
     .filters {
       display: flex;
@@ -1335,6 +1417,28 @@
           <div>
             <h2>Catálogo</h2>
             <p>Selección inspirada en las publicaciones de @calzadoivonne. Precios de ejemplo — consultá el valor actual por WhatsApp.</p>
+          </div>
+        </div>
+
+        <div class="store-filter-bar">
+          <div class="search-input-wrapper">
+            <svg class="search-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            <input type="text" id="storeSearchInput" class="store-search-input" placeholder="🔍 Buscar modelo, marca, color o estilo..." />
+            <button type="button" id="clearStoreSearchBtn" class="clear-search-btn" style="display:none">✕</button>
+          </div>
+
+          <div class="size-filter-wrapper">
+            <span class="filter-label">Talle:</span>
+            <select id="storeSizeFilter" class="store-size-select">
+              <option value="all">Todos los talles</option>
+              <option value="35">Talle 35</option>
+              <option value="36">Talle 36</option>
+              <option value="37">Talle 37</option>
+              <option value="38">Talle 38</option>
+              <option value="39">Talle 39</option>
+              <option value="40">Talle 40</option>
+              <option value="41">Talle 41</option>
+            </select>
           </div>
         </div>
 
@@ -2645,6 +2749,8 @@
 
     let cart = [];
     let activeFilter = "all";
+    let activeSizeFilter = "all";
+    let searchQuery = "";
     let selectedSizes = {};
 
     const grid = document.getElementById("productGrid");
@@ -2675,14 +2781,46 @@
     // RENDERIZADO DEL CATÁLOGO PRINCIPAL (TIENDA)
     // ===============================================
     function renderProducts() {
+      const q = searchQuery.trim().toLowerCase();
+
       const list = products.filter((p) => {
         if (p.status === "desactivado") return false;
-        if (activeFilter === "all") return true;
-        return p.category.toLowerCase() === activeFilter.toLowerCase();
+
+        // Categoría
+        const matchCategory = activeFilter === "all" || p.category.toLowerCase() === activeFilter.toLowerCase();
+
+        // Búsqueda (Nombre, Descripción, Marca, SKU, Categoría, Colores)
+        const matchSearch = !q || 
+          (p.name && p.name.toLowerCase().includes(q)) ||
+          (p.brand && p.brand.toLowerCase().includes(q)) ||
+          (p.desc && p.desc.toLowerCase().includes(q)) ||
+          (p.sku && p.sku.toLowerCase().includes(q)) ||
+          (p.colors && p.colors.toLowerCase().includes(q)) ||
+          (p.category && p.category.toLowerCase().includes(q));
+
+        // Talle
+        let matchSize = true;
+        if (activeSizeFilter !== "all") {
+          const sNum = Number(activeSizeFilter);
+          if (p.stockPerSize) {
+            matchSize = Number(p.stockPerSize[sNum] || 0) > 0;
+          } else {
+            matchSize = (p.sizes || []).includes(sNum);
+          }
+        }
+
+        return matchCategory && matchSearch && matchSize;
       });
 
       if (!list.length) {
-        grid.innerHTML = `<div style="grid-column:1/-1;text-align:center;padding:3rem;color:var(--muted)">No hay productos disponibles en esta categoría.</div>`;
+        grid.innerHTML = `
+          <div style="grid-column:1/-1;text-align:center;padding:3.5rem 1rem;background:var(--white);border-radius:20px;border:1px dashed var(--line);margin:1rem 0">
+            <div style="font-size:2.5rem;margin-bottom:0.5rem">🔍</div>
+            <h3 style="font-family:var(--display);font-size:1.5rem;margin-bottom:0.3rem">Sin resultados encontrados</h3>
+            <p style="color:var(--muted);font-size:0.9rem;max-width:400px;margin:0 auto 1rem">No encontramos productos que coincidan con tu búsqueda o talle seleccionado.</p>
+            <button class="btn btn-outline btn-sm" onclick="resetStoreFilters()">🔄 Limpiar Filtros</button>
+          </div>
+        `;
         return;
       }
 
@@ -2836,7 +2974,50 @@
       window.open(`https://wa.me/${WHATSAPP}?text=${text}`, "_blank");
     }
 
-    // Eventos del catálogo
+    // Eventos del catálogo (Búsqueda y Filtros)
+    const storeSearchInput = document.getElementById("storeSearchInput");
+    const clearStoreSearchBtn = document.getElementById("clearStoreSearchBtn");
+    const storeSizeFilter = document.getElementById("storeSizeFilter");
+
+    if (storeSearchInput) {
+      storeSearchInput.addEventListener("input", (e) => {
+        searchQuery = e.target.value;
+        if (clearStoreSearchBtn) {
+          clearStoreSearchBtn.style.display = searchQuery.length ? "block" : "none";
+        }
+        renderProducts();
+      });
+    }
+
+    if (clearStoreSearchBtn) {
+      clearStoreSearchBtn.addEventListener("click", () => {
+        searchQuery = "";
+        if (storeSearchInput) storeSearchInput.value = "";
+        clearStoreSearchBtn.style.display = "none";
+        renderProducts();
+      });
+    }
+
+    if (storeSizeFilter) {
+      storeSizeFilter.addEventListener("change", (e) => {
+        activeSizeFilter = e.target.value;
+        renderProducts();
+      });
+    }
+
+    window.resetStoreFilters = function() {
+      searchQuery = "";
+      activeFilter = "all";
+      activeSizeFilter = "all";
+      if (storeSearchInput) storeSearchInput.value = "";
+      if (clearStoreSearchBtn) clearStoreSearchBtn.style.display = "none";
+      if (storeSizeFilter) storeSizeFilter.value = "all";
+      document.querySelectorAll(".filter").forEach((b) => {
+        b.classList.toggle("active", b.dataset.filter === "all");
+      });
+      renderProducts();
+    };
+
     document.getElementById("filters").addEventListener("click", (e) => {
       const btn = e.target.closest(".filter");
       if (!btn) return;
