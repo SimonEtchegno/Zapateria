@@ -705,12 +705,273 @@
       .benefits { grid-template-columns: 1fr; }
       .nav-links { display: none; }
       .ig-grid { grid-template-columns: repeat(3, 1fr); }
+      .how-to-grid { grid-template-columns: 1fr; }
     }
     @media (max-width: 560px) {
       .grid { grid-template-columns: 1fr; }
       .hero-gallery { grid-template-columns: 1fr 1fr; min-height: 280px; }
       .hero-shot.main { grid-row: auto; grid-column: 1 / -1; min-height: 220px; }
       .container { width: min(100% - 1.25rem, 1160px); }
+    }
+
+    /* Size interactive selection */
+    .size.available {
+      color: var(--ink);
+      background: var(--bg-soft);
+      cursor: pointer;
+      user-select: none;
+      transition: all 0.15s ease;
+    }
+    .size.available:hover {
+      border-color: var(--ink);
+      background: #e4ded7;
+    }
+    .size.available.selected {
+      background: var(--ink);
+      color: var(--white);
+      border-color: var(--ink);
+      font-weight: 700;
+      transform: scale(1.06);
+    }
+
+    /* Size guide section */
+    .size-guide-card {
+      background: var(--white);
+      border: 1px solid var(--line);
+      border-radius: 24px;
+      padding: clamp(1.4rem, 3vw, 2.4rem);
+      box-shadow: var(--shadow);
+      margin-bottom: 2rem;
+    }
+    .calc-box {
+      background: linear-gradient(135deg, var(--bg-soft) 0%, #f3ece4 100%);
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      padding: 1.4rem;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1.2rem;
+      margin-bottom: 1.8rem;
+    }
+    .calc-input-group {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+    }
+    .calc-input-group input {
+      width: 110px;
+      padding: 0.6rem 0.8rem;
+      border-radius: 10px;
+      border: 1px solid var(--line);
+      font-family: var(--font);
+      font-size: 1rem;
+      font-weight: 600;
+    }
+    .calc-result {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--accent);
+      background: var(--white);
+      padding: 0.6rem 1.2rem;
+      border-radius: 12px;
+      border: 1px solid var(--line);
+    }
+    .size-table-wrapper {
+      overflow-x: auto;
+      margin-bottom: 1.8rem;
+    }
+    .size-table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+      font-size: 0.92rem;
+    }
+    .size-table th, .size-table td {
+      padding: 0.85rem 1rem;
+      border-bottom: 1px solid var(--line);
+    }
+    .size-table th {
+      background: var(--bg);
+      font-family: var(--display);
+      font-size: 1.1rem;
+      font-weight: 600;
+    }
+    .size-table tr:hover {
+      background: rgba(239, 234, 228, 0.4);
+    }
+
+    .how-to-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1rem;
+    }
+    .how-step {
+      background: var(--bg);
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 1.1rem;
+    }
+    .how-step .num {
+      width: 2rem;
+      height: 2rem;
+      border-radius: 50%;
+      background: var(--ink);
+      color: var(--white);
+      font-weight: 700;
+      display: grid;
+      place-items: center;
+      font-size: 0.85rem;
+      margin-bottom: 0.6rem;
+    }
+    .how-step h4 { font-size: 0.98rem; margin-bottom: 0.25rem; }
+    .how-step p { font-size: 0.85rem; color: var(--muted); }
+
+    /* Admin Modal Styles */
+    .modal-admin {
+      position: fixed;
+      inset: 0;
+      z-index: 100;
+      background: rgba(17, 17, 17, 0.65);
+      backdrop-filter: blur(6px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1rem;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.25s ease;
+    }
+    .modal-admin.open {
+      opacity: 1;
+      pointer-events: auto;
+    }
+    .modal-admin-content {
+      background: var(--white);
+      border-radius: 24px;
+      border: 1px solid var(--line);
+      width: min(900px, 100%);
+      max-height: 90vh;
+      display: flex;
+      flex-direction: column;
+      box-shadow: 0 24px 60px rgba(0,0,0,0.25);
+      overflow: hidden;
+    }
+    .admin-head {
+      padding: 1.2rem 1.6rem;
+      background: var(--ink);
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .admin-head h3 {
+      font-family: var(--display);
+      font-size: 1.6rem;
+      font-weight: 600;
+    }
+    .admin-body {
+      padding: 1.4rem 1.6rem;
+      overflow-y: auto;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 1.4rem;
+    }
+    .admin-auth-box {
+      background: var(--white);
+      border-radius: 20px;
+      padding: 2rem;
+      width: min(380px, 100%);
+      text-align: center;
+      border: 1px solid var(--line);
+      box-shadow: var(--shadow);
+    }
+    .admin-auth-box h3 {
+      font-family: var(--display);
+      font-size: 1.8rem;
+      margin-bottom: 0.4rem;
+    }
+    .admin-auth-box p {
+      color: var(--muted);
+      font-size: 0.88rem;
+      margin-bottom: 1.2rem;
+    }
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.35rem;
+      text-align: left;
+      margin-bottom: 0.9rem;
+    }
+    .form-group label {
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: var(--ink);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+    .form-control {
+      padding: 0.65rem 0.85rem;
+      border-radius: 10px;
+      border: 1px solid var(--line);
+      font-family: var(--font);
+      font-size: 0.92rem;
+      background: var(--bg);
+      color: var(--ink);
+    }
+    .form-control:focus {
+      outline: none;
+      border-color: var(--ink);
+      background: var(--white);
+    }
+    .admin-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.88rem;
+    }
+    .admin-table th, .admin-table td {
+      padding: 0.75rem 0.8rem;
+      border-bottom: 1px solid var(--line);
+      vertical-align: middle;
+    }
+    .admin-table th {
+      background: var(--bg-soft);
+      text-align: left;
+      font-weight: 700;
+    }
+    .admin-thumb {
+      width: 48px;
+      height: 48px;
+      object-fit: cover;
+      border-radius: 8px;
+      border: 1px solid var(--line);
+    }
+    .btn-sm {
+      padding: 0.35rem 0.7rem;
+      font-size: 0.8rem;
+      border-radius: 8px;
+    }
+    .btn-danger {
+      background: #8b2626;
+      color: white;
+    }
+    .btn-danger:hover { background: #ab2c2c; }
+    .badge-checkboxes {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+    .badge-checkboxes label {
+      display: flex;
+      align-items: center;
+      gap: 0.3rem;
+      font-size: 0.85rem;
+      cursor: pointer;
+      text-transform: none;
+      letter-spacing: normal;
+      font-weight: 500;
     }
   </style>
 </head>
@@ -729,10 +990,14 @@
       <div class="nav-links">
         <a href="#catalogo">Catálogo</a>
         <a href="#categorias">Categorías</a>
+        <a href="#talles">Guía de Talles</a>
         <a href="#instagram">Instagram</a>
         <a href="#contacto">Contacto</a>
       </div>
       <div class="nav-actions">
+        <button class="icon-btn" id="openAdminBtn" aria-label="Panel Administrador" title="Panel Administrador">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+        </button>
         <a class="icon-btn" href="https://www.instagram.com/calzadoivonne/" target="_blank" rel="noopener" aria-label="Instagram" title="Instagram">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>
         </a>
@@ -823,6 +1088,75 @@
       </div>
     </section>
 
+    <!-- Guía de Talles Section -->
+    <section class="section" id="talles">
+      <div class="container">
+        <div class="section-head">
+          <div>
+            <h2>Guía de Talles</h2>
+            <p>Encontrá tu medida exacta de plantilla para elegir con total tranquilidad.</p>
+          </div>
+        </div>
+
+        <div class="size-guide-card">
+          <!-- Calculadora de Talle -->
+          <div class="calc-box">
+            <div>
+              <h3 style="font-family:var(--display);font-size:1.4rem;font-weight:600;margin-bottom:0.2rem">Calculá tu talle ideal</h3>
+              <p style="color:var(--muted);font-size:0.88rem">Ingresá la medida en cm del largo de tu plantilla o pie:</p>
+            </div>
+            <div class="calc-input-group">
+              <input type="number" id="cmInput" step="0.1" min="20" max="30" placeholder="Ej: 23.8" />
+              <span>cm</span>
+              <div class="calc-result" id="calcResult">Tu talle es: —</div>
+            </div>
+          </div>
+
+          <!-- Tabla de Medidas -->
+          <div class="size-table-wrapper">
+            <table class="size-table">
+              <thead>
+                <tr>
+                  <th>Talle ARG</th>
+                  <th>Medida de Plantilla (cm)</th>
+                  <th>Recomendación de Calce</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr><td><strong>35</strong></td><td>22.5 cm</td><td>Horma estándar / Pie angosto</td></tr>
+                <tr><td><strong>36</strong></td><td>23.0 cm</td><td>Horma estándar</td></tr>
+                <tr><td><strong>37</strong></td><td>23.8 cm</td><td>Horma estándar</td></tr>
+                <tr><td><strong>38</strong></td><td>24.5 cm</td><td>Horma estándar / Confortable</td></tr>
+                <tr><td><strong>39</strong></td><td>25.2 cm</td><td>Horma holgada</td></tr>
+                <tr><td><strong>40</strong></td><td>26.0 cm</td><td>Recomendado para zapatillas urbanas</td></tr>
+                <tr><td><strong>41</strong></td><td>26.7 cm</td><td>Deportivas y confort amplio</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <!-- Pasos para medir -->
+          <h3 style="font-family:var(--display);font-size:1.4rem;font-weight:600;margin-bottom:1rem">¿Cómo medir tu pie correctamente?</h3>
+          <div class="how-to-grid">
+            <div class="how-step">
+              <div class="num">1</div>
+              <h4>Apoyá tu pie</h4>
+              <p>Colocá una hoja de papel en el suelo pegada a una pared. Pisá la hoja apoyando el talón contra la pared.</p>
+            </div>
+            <div class="how-step">
+              <div class="num">2</div>
+              <h4>Marcá la punta</h4>
+              <p>Con un lápiz vertical, marcá hasta dónde llega tu dedo más largo (generalmente el dedo gordo o el segundo).</p>
+            </div>
+            <div class="how-step">
+              <div class="num">3</div>
+              <h4>Medí la distancia</h4>
+              <p>Con una regla o cinta métrica, medí en centímetros desde el borde del talón hasta la marca que hiciste.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <section class="ig-section" id="instagram">
       <div class="container">
         <div class="ig-head">
@@ -904,11 +1238,145 @@
     </div>
   </aside>
 
+  <!-- Modal Auth Admin -->
+  <div class="modal-admin" id="adminAuthModal">
+    <div class="admin-auth-box">
+      <div style="font-size:2.4rem;margin-bottom:0.4rem">🔑</div>
+      <h3>Acceso Administrador</h3>
+      <p>Ingresá la contraseña para gestionar el catálogo</p>
+      <form id="adminAuthForm">
+        <div class="form-group">
+          <input type="password" id="adminPassInput" class="form-control" placeholder="Contraseña (por defecto: admin)" required />
+        </div>
+        <div style="display:flex;gap:0.5rem;margin-top:1rem">
+          <button type="button" class="btn btn-outline" style="flex:1" id="closeAdminAuthBtn">Cancelar</button>
+          <button type="submit" class="btn btn-dark" style="flex:1">Ingresar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal Admin Dashboard -->
+  <div class="modal-admin" id="adminModal">
+    <div class="modal-admin-content">
+      <div class="admin-head">
+        <div>
+          <h3>Panel de Administración</h3>
+          <span style="font-size:0.8rem;color:#ccc">Calzado Ivonne · Gestión de Catálogo</span>
+        </div>
+        <button class="close-btn" id="closeAdminBtn" style="color:white;border-color:#555">✕</button>
+      </div>
+      <div class="admin-body">
+        <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:0.8rem">
+          <div>
+            <strong id="adminProductCount">0 productos en catálogo</strong>
+            <div style="font-size:0.8rem;color:var(--muted)">Guardado automáticamente en tu navegador</div>
+          </div>
+          <div style="display:flex;gap:0.5rem">
+            <button class="btn btn-dark btn-sm" id="btnNewProduct">＋ Agregar Producto</button>
+            <button class="btn btn-outline btn-sm" id="btnResetProducts" title="Restablecer catálogo base">🔄 Restablecer</button>
+          </div>
+        </div>
+
+        <!-- Admin Form Container -->
+        <div id="adminFormContainer" style="display:none;background:var(--bg);border:1px solid var(--line);border-radius:18px;padding:1.2rem">
+          <h4 id="adminFormTitle" style="font-family:var(--display);font-size:1.3rem;margin-bottom:0.8rem">Agregar Producto</h4>
+          <form id="adminProductForm">
+            <input type="hidden" id="prodId" />
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.8rem">
+              <div class="form-group">
+                <label>Nombre del modelo</label>
+                <input type="text" id="prodName" class="form-control" placeholder="Ej: Chelsea Bordó Track" required />
+              </div>
+              <div class="form-group">
+                <label>Categoría</label>
+                <select id="prodCategory" class="form-control" required>
+                  <option value="botas">Botas</option>
+                  <option value="zapatillas">Zapatillas</option>
+                  <option value="mules">Mules</option>
+                </select>
+              </div>
+            </div>
+
+            <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:0.8rem">
+              <div class="form-group">
+                <label>Precio ($)</label>
+                <input type="number" id="prodPrice" class="form-control" placeholder="129900" required />
+              </div>
+              <div class="form-group">
+                <label>Precio Anterior ($ - opcional)</label>
+                <input type="number" id="prodOldPrice" class="form-control" placeholder="139900" />
+              </div>
+              <div class="form-group">
+                <label>Etiqueta / Badge</label>
+                <input type="text" id="prodBadgeText" class="form-control" placeholder="Ej: Nuevo, Oferta, FILA" />
+              </div>
+            </div>
+
+            <div style="display:grid;grid-template-columns:1fr 2fr;gap:0.8rem">
+              <div class="form-group">
+                <label>Estilo de Badge</label>
+                <select id="prodBadge" class="form-control">
+                  <option value="new">Nuevo (Verde)</option>
+                  <option value="sale">Oferta (Bordó)</option>
+                  <option value="brand">Marca (Azul)</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label>Ruta / URL de la Foto</label>
+                <input type="text" id="prodImg" class="form-control" placeholder="Ej: assets/p1.jpg o URL de imagen" required />
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label>Descripción corta</label>
+              <input type="text" id="prodDesc" class="form-control" placeholder="Ej: Cuero taupe con elástico cruzado y suela confort" required />
+            </div>
+
+            <div class="form-group">
+              <label>Talles Disponibles</label>
+              <div class="badge-checkboxes" id="sizesCheckboxes">
+                <label><input type="checkbox" value="35" checked /> 35</label>
+                <label><input type="checkbox" value="36" checked /> 36</label>
+                <label><input type="checkbox" value="37" checked /> 37</label>
+                <label><input type="checkbox" value="38" checked /> 38</label>
+                <label><input type="checkbox" value="39" checked /> 39</label>
+                <label><input type="checkbox" value="40" /> 40</label>
+                <label><input type="checkbox" value="41" /> 41</label>
+              </div>
+            </div>
+
+            <div style="display:flex;justify-content:flex-end;gap:0.6rem;margin-top:0.8rem">
+              <button type="button" class="btn btn-outline btn-sm" id="btnCancelForm">Cancelar</button>
+              <button type="submit" class="btn btn-dark btn-sm">Guardar Producto</button>
+            </div>
+          </form>
+        </div>
+
+        <!-- Product Table -->
+        <div style="overflow-x:auto">
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th>Foto</th>
+                <th>Nombre</th>
+                <th>Categoría</th>
+                <th>Precio</th>
+                <th>Talles</th>
+                <th style="text-align:right">Acciones</th>
+              </tr>
+            </thead>
+            <tbody id="adminProductTableBody"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <div class="toast" id="toast">Agregado al pedido</div>
 
   <script>
-    // Precios de ejemplo — reemplazá con los reales de la tienda
-    const products = [
+    const defaultProducts = [
       {
         id: 1,
         name: "Botineta Crisscross Taupe",
@@ -1005,8 +1473,19 @@
       }
     ];
 
+    // Cargar productos desde LocalStorage o defecto
+    function loadProducts() {
+      const stored = localStorage.getItem("ivonne_products");
+      if (stored) {
+        try { return JSON.parse(stored); } catch (e) {}
+      }
+      return [...defaultProducts];
+    }
+
+    let products = loadProducts();
     let cart = [];
     let activeFilter = "all";
+    let selectedSizes = {}; // { [productId]: size }
 
     const grid = document.getElementById("productGrid");
     const cartCount = document.getElementById("cartCount");
@@ -1016,37 +1495,50 @@
     const overlay = document.getElementById("overlay");
     const toast = document.getElementById("toast");
 
-    // Cambiá este número por el WhatsApp real de la tienda (código país sin +)
     const WHATSAPP = "5492923653988";
 
     const money = (n) =>
       n.toLocaleString("es-AR", { style: "currency", currency: "ARS", maximumFractionDigits: 0 });
 
+    function saveProductsStorage() {
+      localStorage.setItem("ivonne_products", JSON.stringify(products));
+    }
+
     function renderProducts() {
       const list = products.filter((p) => activeFilter === "all" || p.category === activeFilter);
-      grid.innerHTML = list.map((p) => `
-        <article class="card">
-          <div class="card-media">
-            ${p.badge ? `<span class="badge ${p.badge}">${p.badgeText}</span>` : ""}
-            <img src="${p.img}" alt="${p.name}" loading="lazy" />
-          </div>
-          <div class="card-body">
-            <div class="card-cat">${p.category}</div>
-            <h3>${p.name}</h3>
-            <p class="card-desc">${p.desc}</p>
-            <div class="sizes">
-              ${p.sizes.map((s) => `<span class="size available">${s}</span>`).join("")}
+      grid.innerHTML = list.map((p) => {
+        const currentSelected = selectedSizes[p.id] || (p.sizes && p.sizes.length ? p.sizes[0] : null);
+        if (!selectedSizes[p.id] && currentSelected) {
+          selectedSizes[p.id] = currentSelected;
+        }
+        return `
+          <article class="card" data-card-id="${p.id}">
+            <div class="card-media">
+              ${p.badge ? `<span class="badge ${p.badge}">${p.badgeText}</span>` : ""}
+              <img src="${p.img}" alt="${p.name}" loading="lazy" />
             </div>
-            <div class="card-footer">
-              <div class="price">
-                ${money(p.price)}
-                ${p.oldPrice ? `<small>${money(p.oldPrice)}</small>` : ""}
+            <div class="card-body">
+              <div class="card-cat">${p.category}</div>
+              <h3>${p.name}</h3>
+              <p class="card-desc">${p.desc}</p>
+              <div class="sizes">
+                ${(p.sizes || []).map((s) => `
+                  <button class="size available ${s == currentSelected ? 'selected' : ''}" data-card-size="${p.id}" data-size="${s}">
+                    ${s}
+                  </button>
+                `).join("")}
               </div>
-              <button class="add-btn" data-add="${p.id}">Agregar</button>
+              <div class="card-footer">
+                <div class="price">
+                  ${money(p.price)}
+                  ${p.oldPrice ? `<small>${money(p.oldPrice)}</small>` : ""}
+                </div>
+                <button class="add-btn" data-add="${p.id}">Agregar</button>
+              </div>
             </div>
-          </div>
-        </article>
-      `).join("");
+          </article>
+        `;
+      }).join("");
     }
 
     function setFilter(filter) {
@@ -1072,29 +1564,35 @@
       toast.textContent = msg;
       toast.classList.add("show");
       clearTimeout(showToast._t);
-      showToast._t = setTimeout(() => toast.classList.remove("show"), 1800);
+      showToast._t = setTimeout(() => toast.classList.remove("show"), 2000);
     }
 
     function addToCart(id) {
       const product = products.find((p) => p.id === id);
       if (!product) return;
-      const existing = cart.find((i) => i.id === id);
-      if (existing) existing.qty += 1;
-      else cart.push({ id, qty: 1 });
+      const size = selectedSizes[id] || (product.sizes && product.sizes.length ? product.sizes[0] : "Único");
+      
+      const itemKey = `${id}_${size}`;
+      const existing = cart.find((i) => i.key === itemKey);
+      if (existing) {
+        existing.qty += 1;
+      } else {
+        cart.push({ key: itemKey, id, size, qty: 1 });
+      }
       renderCart();
-      showToast(`${product.name} agregada`);
+      showToast(`${product.name} (Talle ${size}) agregado`);
     }
 
-    function changeQty(id, delta) {
-      const item = cart.find((i) => i.id === id);
+    function changeQty(key, delta) {
+      const item = cart.find((i) => i.key === key);
       if (!item) return;
       item.qty += delta;
-      if (item.qty <= 0) cart = cart.filter((i) => i.id !== id);
+      if (item.qty <= 0) cart = cart.filter((i) => i.key !== key);
       renderCart();
     }
 
-    function removeItem(id) {
-      cart = cart.filter((i) => i.id !== id);
+    function removeItem(key) {
+      cart = cart.filter((i) => i.key !== key);
       renderCart();
     }
 
@@ -1111,20 +1609,21 @@
       let total = 0;
       cartItems.innerHTML = cart.map((item) => {
         const p = products.find((x) => x.id === item.id);
+        if (!p) return "";
         total += p.price * item.qty;
         return `
           <div class="cart-item">
             <img src="${p.img}" alt="" />
             <div>
               <h4>${p.name}</h4>
-              <p>${money(p.price)}</p>
+              <p>Talle: <strong>${item.size}</strong> · ${money(p.price)}</p>
               <div class="qty">
-                <button data-qty="${p.id}" data-delta="-1">−</button>
+                <button data-qty-key="${item.key}" data-delta="-1">−</button>
                 <span>${item.qty}</span>
-                <button data-qty="${p.id}" data-delta="1">+</button>
+                <button data-qty-key="${item.key}" data-delta="1">+</button>
               </div>
             </div>
-            <button class="remove" data-remove="${p.id}">Quitar</button>
+            <button class="remove" data-remove-key="${item.key}">Quitar</button>
           </div>`;
       }).join("");
       cartTotal.textContent = money(total);
@@ -1136,13 +1635,13 @@
       }
       const lines = cart.map((item) => {
         const p = products.find((x) => x.id === item.id);
-        return `• ${p.name} x${item.qty} — ${money(p.price * item.qty)}`;
+        return `• ${p ? p.name : 'Producto'} (Talle ${item.size}) x${item.qty} — ${money((p ? p.price : 0) * item.qty)}`;
       });
       const total = cart.reduce((s, item) => {
         const p = products.find((x) => x.id === item.id);
-        return s + p.price * item.qty;
+        return s + (p ? p.price : 0) * item.qty;
       }, 0);
-      return `Hola Calzado Ivonne! Quiero este pedido:\n\n${lines.join("\n")}\n\nTotal estimado: ${money(total)}\n\n¿Me confirman talles y stock?`;
+      return `Hola Calzado Ivonne! Quiero este pedido:\n\n${lines.join("\n")}\n\nTotal estimado: ${money(total)}\n\n¿Me confirman si tienen stock disponible de estos talles?`;
     }
 
     function openWhatsApp() {
@@ -1150,6 +1649,26 @@
       window.open(`https://wa.me/${WHATSAPP}?text=${text}`, "_blank");
     }
 
+    // Calculadora de Talle JS
+    document.getElementById("cmInput").addEventListener("input", (e) => {
+      const cm = parseFloat(e.target.value);
+      const res = document.getElementById("calcResult");
+      if (isNaN(cm) || cm <= 0) {
+        res.textContent = "Tu talle es: —";
+        return;
+      }
+      let talle = "";
+      if (cm <= 22.7) talle = "35";
+      else if (cm <= 23.4) talle = "36";
+      else if (cm <= 24.1) talle = "37";
+      else if (cm <= 24.8) talle = "38";
+      else if (cm <= 25.6) talle = "39";
+      else if (cm <= 26.3) talle = "40";
+      else talle = "41";
+      res.textContent = `Tu talle recomendado es: ${talle} (${cm} cm)`;
+    });
+
+    // Eventos del catálogo
     document.getElementById("filters").addEventListener("click", (e) => {
       const btn = e.target.closest(".filter");
       if (!btn) return;
@@ -1164,19 +1683,38 @@
     });
 
     grid.addEventListener("click", (e) => {
-      const btn = e.target.closest("[data-add]");
-      if (!btn) return;
-      addToCart(Number(btn.dataset.add));
+      // Selección de talle en card
+      const sizeBtn = e.target.closest("[data-card-size]");
+      if (sizeBtn) {
+        const prodId = Number(sizeBtn.dataset.cardSize);
+        const sizeVal = Number(sizeBtn.dataset.size);
+        selectedSizes[prodId] = sizeVal;
+        
+        // Actualizar visualmente la card
+        const card = grid.querySelector(`[data-card-id="${prodId}"]`);
+        if (card) {
+          card.querySelectorAll(".size").forEach((b) => {
+            b.classList.toggle("selected", b.dataset.size == sizeVal);
+          });
+        }
+        return;
+      }
+
+      // Botón agregar
+      const addBtn = e.target.closest("[data-add]");
+      if (addBtn) {
+        addToCart(Number(addBtn.dataset.add));
+      }
     });
 
     cartItems.addEventListener("click", (e) => {
-      const qtyBtn = e.target.closest("[data-qty]");
+      const qtyBtn = e.target.closest("[data-qty-key]");
       if (qtyBtn) {
-        changeQty(Number(qtyBtn.dataset.qty), Number(qtyBtn.dataset.delta));
+        changeQty(qtyBtn.dataset.qtyKey, Number(qtyBtn.dataset.delta));
         return;
       }
-      const removeBtn = e.target.closest("[data-remove]");
-      if (removeBtn) removeItem(Number(removeBtn.dataset.remove));
+      const removeBtn = e.target.closest("[data-remove-key]");
+      if (removeBtn) removeItem(removeBtn.dataset.removeKey);
     });
 
     document.getElementById("openCart").addEventListener("click", openCart);
@@ -1191,6 +1729,187 @@
     });
     document.getElementById("waDirect").addEventListener("click", openWhatsApp);
 
+    // ===================================
+    // LÓGICA DEL PANEL DE ADMINISTRACIÓN
+    // ===================================
+    const openAdminBtn = document.getElementById("openAdminBtn");
+    const adminAuthModal = document.getElementById("adminAuthModal");
+    const adminAuthForm = document.getElementById("adminAuthForm");
+    const adminPassInput = document.getElementById("adminPassInput");
+    const closeAdminAuthBtn = document.getElementById("closeAdminAuthBtn");
+
+    const adminModal = document.getElementById("adminModal");
+    const closeAdminBtn = document.getElementById("closeAdminBtn");
+    const adminProductTableBody = document.getElementById("adminProductTableBody");
+    const adminProductCount = document.getElementById("adminProductCount");
+    const btnNewProduct = document.getElementById("btnNewProduct");
+    const btnResetProducts = document.getElementById("btnResetProducts");
+
+    const adminFormContainer = document.getElementById("adminFormContainer");
+    const adminProductForm = document.getElementById("adminProductForm");
+    const adminFormTitle = document.getElementById("adminFormTitle");
+    const btnCancelForm = document.getElementById("btnCancelForm");
+
+    openAdminBtn.addEventListener("click", () => {
+      adminAuthModal.classList.add("open");
+      adminPassInput.focus();
+    });
+
+    closeAdminAuthBtn.addEventListener("click", () => {
+      adminAuthModal.classList.remove("open");
+    });
+
+    adminAuthForm.addEventListener("submit", (e) => {
+      e.preventDefault();
+      const pass = adminPassInput.value.trim();
+      if (pass === "admin" || pass === "1234") {
+        adminAuthModal.classList.remove("open");
+        adminPassInput.value = "";
+        openAdminDashboard();
+      } else {
+        alert("Contraseña incorrecta (la contraseña por defecto es 'admin')");
+      }
+    });
+
+    function openAdminDashboard() {
+      adminModal.classList.add("open");
+      adminFormContainer.style.display = "none";
+      renderAdminList();
+    }
+
+    closeAdminBtn.addEventListener("click", () => {
+      adminModal.classList.remove("open");
+    });
+
+    function renderAdminList() {
+      adminProductCount.textContent = `${products.length} productos en catálogo`;
+      adminProductTableBody.innerHTML = products.map((p) => `
+        <tr>
+          <td><img src="${p.img}" class="admin-thumb" alt="" /></td>
+          <td><strong>${p.name}</strong><br/><small style="color:var(--muted)">${p.desc.substring(0, 40)}...</small></td>
+          <td><span style="text-transform:uppercase;font-size:0.75rem;font-weight:700">${p.category}</span></td>
+          <td><strong>${money(p.price)}</strong>${p.oldPrice ? `<br/><small style="text-decoration:line-through;color:var(--muted)">${money(p.oldPrice)}</small>` : ''}</td>
+          <td>${(p.sizes || []).join(", ")}</td>
+          <td style="text-align:right">
+            <button class="btn btn-outline btn-sm" onclick="editProduct(${p.id})">✏️ Editar</button>
+            <button class="btn btn-danger btn-sm" onclick="deleteProduct(${p.id})">🗑️ Eliminar</button>
+          </td>
+        </tr>
+      `).join("");
+    }
+
+    btnNewProduct.addEventListener("click", () => {
+      adminFormTitle.textContent = "Agregar Nuevo Producto";
+      adminProductForm.reset();
+      document.getElementById("prodId").value = "";
+      document.getElementById("prodImg").value = "assets/p1.jpg";
+      adminFormContainer.style.display = "block";
+    });
+
+    btnCancelForm.addEventListener("click", () => {
+      adminFormContainer.style.display = "none";
+    });
+
+    window.editProduct = function(id) {
+      const p = products.find((x) => x.id === id);
+      if (!p) return;
+      adminFormTitle.textContent = `Editar Producto #${p.id}`;
+      document.getElementById("prodId").value = p.id;
+      document.getElementById("prodName").value = p.name;
+      document.getElementById("prodCategory").value = p.category;
+      document.getElementById("prodPrice").value = p.price;
+      document.getElementById("prodOldPrice").value = p.oldPrice || "";
+      document.getElementById("prodBadgeText").value = p.badgeText || "";
+      document.getElementById("prodBadge").value = p.badge || "new";
+      document.getElementById("prodImg").value = p.img;
+      document.getElementById("prodDesc").value = p.desc;
+
+      // Talles checkboxes
+      const checkboxes = document.querySelectorAll("#sizesCheckboxes input");
+      checkboxes.forEach((cb) => {
+        cb.checked = (p.sizes || []).includes(Number(cb.value));
+      });
+
+      adminFormContainer.style.display = "block";
+    };
+
+    window.deleteProduct = function(id) {
+      if (confirm("¿Estás seguro de eliminar este producto del catálogo?")) {
+        products = products.filter((p) => p.id !== id);
+        saveProductsStorage();
+        renderAdminList();
+        renderProducts();
+        showToast("Producto eliminado");
+      }
+    };
+
+    btnResetProducts.addEventListener("click", () => {
+      if (confirm("¿Deseás restablecer el catálogo al listado original de muestra?")) {
+        products = [...defaultProducts];
+        saveProductsStorage();
+        renderAdminList();
+        renderProducts();
+        showToast("Catálogo restablecido");
+      }
+    });
+
+    adminProductForm.addEventListener("submit", (e) => {
+      e.preventDefault();
+      const idVal = document.getElementById("prodId").value;
+      const name = document.getElementById("prodName").value.trim();
+      const category = document.getElementById("prodCategory").value;
+      const price = Number(document.getElementById("prodPrice").value);
+      const oldPriceVal = document.getElementById("prodOldPrice").value;
+      const oldPrice = oldPriceVal ? Number(oldPriceVal) : null;
+      const badgeText = document.getElementById("prodBadgeText").value.trim();
+      const badge = document.getElementById("prodBadge").value;
+      const img = document.getElementById("prodImg").value.trim();
+      const desc = document.getElementById("prodDesc").value.trim();
+
+      const selectedSizesArr = [];
+      document.querySelectorAll("#sizesCheckboxes input:checked").forEach((cb) => {
+        selectedSizesArr.push(Number(cb.value));
+      });
+
+      if (idVal) {
+        // Editar
+        const p = products.find((x) => x.id === Number(idVal));
+        if (p) {
+          p.name = name;
+          p.category = category;
+          p.price = price;
+          p.oldPrice = oldPrice;
+          p.badgeText = badgeText;
+          p.badge = badgeText ? badge : null;
+          p.img = img;
+          p.desc = desc;
+          p.sizes = selectedSizesArr;
+        }
+      } else {
+        // Nuevo
+        const newId = products.length ? Math.max(...products.map((p) => p.id)) + 1 : 1;
+        products.push({
+          id: newId,
+          name,
+          category,
+          price,
+          oldPrice,
+          badgeText,
+          badge: badgeText ? badge : null,
+          img,
+          desc,
+          sizes: selectedSizesArr
+        });
+      }
+
+      saveProductsStorage();
+      adminFormContainer.style.display = "none";
+      renderAdminList();
+      renderProducts();
+      showToast("Producto guardado con éxito");
+    });
+
+    // Inicialización
     renderProducts();
     renderCart();
   </script>
