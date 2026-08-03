@@ -1391,6 +1391,11 @@
         <button class="admin-tab" data-tab="categories">🏷️ 3. Categorías</button>
         <button class="admin-tab" data-tab="brands">👟 4. Marcas</button>
         <button class="admin-tab" data-tab="inventory">📋 5. Inventario</button>
+        <button class="admin-tab" data-tab="customers">👥 6. Clientes</button>
+        <button class="admin-tab" data-tab="promos">🏷️ 7. Promociones</button>
+        <button class="admin-tab" data-tab="reports">📈 8. Reportes & Exportar</button>
+        <button class="admin-tab" data-tab="gallery">🖼️ 9. Imágenes</button>
+        <button class="admin-tab" data-tab="notifs">🔔 10. Notificaciones <span id="notifBadgeCount" class="cart-count" style="position:static;display:inline-flex;margin-left:0.3rem;background:var(--accent)">4</span></button>
       </div>
 
       <div class="admin-body">
@@ -1781,7 +1786,311 @@
           </div>
         </div>
 
-      </div>
+        <!-- ==================== TAB 6: GESTIÓN DE CLIENTES ==================== -->
+        <div id="tabCustomers" class="tab-pane" style="display:none">
+          <div class="admin-toolbar" style="margin-bottom:1.2rem">
+            <div style="display:flex;gap:0.6rem;flex:1;flex-wrap:wrap">
+              <input type="text" id="customerSearchInput" class="form-control" placeholder="🔍 Buscar por nombre, email o teléfono..." style="max-width:300px" />
+              <select id="customerFilterStatus" class="form-control" style="max-width:180px">
+                <option value="all">Todos los estados</option>
+                <option value="Activo">Activos</option>
+                <option value="Bloqueado">Bloqueados</option>
+              </select>
+            </div>
+            <button class="btn btn-dark" id="btnNewCustomer">＋ Registrar Cliente</button>
+          </div>
+
+          <!-- Customer Form (Hidden by default) -->
+          <div class="widget-box" id="customerFormContainer" style="display:none;margin-bottom:1.2rem;background:#fcfbfa">
+            <div class="widget-title" id="customerFormTitle">Registrar Nuevo Cliente</div>
+            <form id="adminCustomerForm">
+              <input type="hidden" id="customerId" />
+              <div class="form-grid">
+                <div class="form-group">
+                  <label>Nombre y Apellido</label>
+                  <input type="text" id="custName" class="form-control" required placeholder="Ej. María González" />
+                </div>
+                <div class="form-group">
+                  <label>Email de Contacto</label>
+                  <input type="email" id="custEmail" class="form-control" required placeholder="maria@email.com" />
+                </div>
+                <div class="form-group">
+                  <label>Teléfono / WhatsApp</label>
+                  <input type="text" id="custPhone" class="form-control" required placeholder="2923-456789" />
+                </div>
+                <div class="form-group">
+                  <label>Estado de Cuenta</label>
+                  <select id="custStatus" class="form-control">
+                    <option value="Activo">🟢 Activo</option>
+                    <option value="Bloqueado">🔴 Bloqueado (Sin permiso de compra)</option>
+                  </select>
+                </div>
+                <div class="form-group full">
+                  <label>Dirección de Envío / Entrega</label>
+                  <input type="text" id="custAddress" class="form-control" placeholder="Av. San Martín 450, Pigüé" />
+                </div>
+              </div>
+              <div style="display:flex;justify-content:flex-end;gap:0.5rem;margin-top:1rem">
+                <button type="button" class="btn btn-outline" id="btnCancelCustForm">Cancelar</button>
+                <button type="submit" class="btn btn-dark">Guardar Cliente</button>
+              </div>
+            </form>
+          </div>
+
+          <!-- Customers Table -->
+          <div class="widget-box">
+            <div class="widget-title">Base de Clientes Registrados</div>
+            <div style="overflow-x:auto">
+              <table class="admin-table">
+                <thead>
+                  <tr>
+                    <th>Cliente</th>
+                    <th>Contacto</th>
+                    <th>Dirección</th>
+                    <th>Compras Totales</th>
+                    <th>Estado</th>
+                    <th style="text-align:right">Acciones</th>
+                  </tr>
+                </thead>
+                <tbody id="adminCustomerTableBody"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- ==================== TAB 7: GESTIÓN DE PROMOCIONES ==================== -->
+        <div id="tabPromos" class="tab-pane" style="display:none">
+          <div class="admin-toolbar" style="margin-bottom:1.2rem">
+            <div>
+              <strong style="font-size:1.1rem">Cupones y Promociones Activas</strong>
+              <p style="font-size:0.8rem;color:var(--muted);margin:0">Creá códigos de descuento fijando porcentajes o montos fijos para el carrito.</p>
+            </div>
+            <button class="btn btn-dark" id="btnNewPromo">＋ Crear Descuento / Cupón</button>
+          </div>
+
+          <!-- Promo Form -->
+          <div class="widget-box" id="promoFormContainer" style="display:none;margin-bottom:1.2rem;background:#fcfbfa">
+            <div class="widget-title" id="promoFormTitle">Crear Nueva Promoción</div>
+            <form id="adminPromoForm">
+              <input type="hidden" id="promoId" />
+              <div class="form-grid">
+                <div class="form-group">
+                  <label>Código del Cupón</label>
+                  <input type="text" id="promoCode" class="form-control" placeholder="Ej. IVONNE10" required style="text-transform:uppercase" />
+                </div>
+                <div class="form-group">
+                  <label>Tipo de Descuento</label>
+                  <select id="promoType" class="form-control">
+                    <option value="porcentaje">Porcentaje (%)</option>
+                    <option value="monto">Monto Fijo ($)</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label>Valor de Descuento</label>
+                  <input type="number" id="promoValue" class="form-control" required placeholder="Ej. 10 para 10% o 2000 para $2000" />
+                </div>
+                <div class="form-group">
+                  <label>Aplicar a</label>
+                  <select id="promoScope" class="form-control">
+                    <option value="all">Toda la Tienda</option>
+                    <option value="category">Categoría Específica</option>
+                    <option value="brand">Marca Específica</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label>Categoría o Marca Seleccionada</label>
+                  <input type="text" id="promoTarget" class="form-control" placeholder="Ej. botas o FILA" />
+                </div>
+                <div class="form-group">
+                  <label>Estado</label>
+                  <select id="promoStatus" class="form-control">
+                    <option value="Activa">🟢 Activa</option>
+                    <option value="Inactiva">⚪ Inactiva</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label>Fecha Inicio</label>
+                  <input type="date" id="promoStartDate" class="form-control" required />
+                </div>
+                <div class="form-group">
+                  <label>Fecha Fin / Expiración</label>
+                  <input type="date" id="promoEndDate" class="form-control" required />
+                </div>
+              </div>
+              <div style="display:flex;justify-content:flex-end;gap:0.5rem;margin-top:1rem">
+                <button type="button" class="btn btn-outline" id="btnCancelPromoForm">Cancelar</button>
+                <button type="submit" class="btn btn-dark">Guardar Promoción</button>
+              </div>
+            </form>
+          </div>
+
+          <!-- Promos Table -->
+          <div class="widget-box">
+            <div class="widget-title">Listado de Promociones</div>
+            <div style="overflow-x:auto">
+              <table class="admin-table">
+                <thead>
+                  <tr>
+                    <th>Código</th>
+                    <th>Descuento</th>
+                    <th>Aplicación</th>
+                    <th>Vigencia</th>
+                    <th>Estado</th>
+                    <th style="text-align:right">Acciones</th>
+                  </tr>
+                </thead>
+                <tbody id="adminPromoTableBody"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- ==================== TAB 8: REPORTES & EXPORTAR ==================== -->
+        <div id="tabReports" class="tab-pane" style="display:none">
+          <div class="admin-toolbar" style="margin-bottom:1.2rem;background:var(--bg-soft);padding:1rem;border-radius:14px">
+            <div>
+              <strong style="font-size:1.1rem">Centro de Reportes Estadísticos</strong>
+              <p style="font-size:0.8rem;color:var(--muted);margin:0">Generá reportes operativos y exportá la información en tiempo real.</p>
+            </div>
+            <div style="display:flex;gap:0.5rem">
+              <button class="btn btn-outline" id="btnExportCSV">📥 Exportar Excel / CSV</button>
+              <button class="btn btn-dark" id="btnPrintReport">📄 Exportar PDF / Imprimir</button>
+            </div>
+          </div>
+
+          <!-- Reports KPI Overview -->
+          <div class="kpi-grid" style="margin-bottom:1.2rem">
+            <div class="kpi-card">
+              <div class="kpi-card-head"><span>Ingresos Totales</span><span>💰</span></div>
+              <div class="kpi-val" id="repTotalIncome">$5.074.500</div>
+              <div class="kpi-sub">Total facturado histórico</div>
+            </div>
+            <div class="kpi-card">
+              <div class="kpi-card-head"><span>Ticket Promedio</span><span>📊</span></div>
+              <div class="kpi-val" id="repAvgTicket">$128.500</div>
+              <div class="kpi-sub">Promedio por pedido</div>
+            </div>
+            <div class="kpi-card">
+              <div class="kpi-card-head"><span>Producto Estrella</span><span>⭐</span></div>
+              <div class="kpi-val" style="font-size:1.1rem;margin-top:0.4rem">Chelsea Bordó</div>
+              <div class="kpi-sub">18 pares vendidos este mes</div>
+            </div>
+            <div class="kpi-card">
+              <div class="kpi-card-head"><span>Sin Stock</span><span>⚠️</span></div>
+              <div class="kpi-val" id="repOutCount" style="color:var(--accent)">0</div>
+              <div class="kpi-sub">Modelos agotados</div>
+            </div>
+          </div>
+
+          <!-- Tables Grid (2 cols) -->
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.2rem">
+            <div class="widget-box">
+              <div class="widget-title">🔥 Productos Más Vendidos</div>
+              <table class="admin-table">
+                <thead>
+                  <tr>
+                    <th>Producto</th>
+                    <th>Ventas</th>
+                    <th>Total ($)</th>
+                  </tr>
+                </thead>
+                <tbody id="repTopProductsBody"></tbody>
+              </table>
+            </div>
+
+            <div class="widget-box">
+              <div class="widget-title">📉 Productos Menos Vendidos / Sin Rotación</div>
+              <table class="admin-table">
+                <thead>
+                  <tr>
+                    <th>Producto</th>
+                    <th>Stock</th>
+                    <th>Estado</th>
+                  </tr>
+                </thead>
+                <tbody id="repLowProductsBody"></tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- Frequent Clients Report -->
+          <div class="widget-box" style="margin-top:1.2rem">
+            <div class="widget-title">👑 Clientes Frecuentes (Top Compradores)</div>
+            <table class="admin-table">
+              <thead>
+                <tr>
+                  <th>Cliente</th>
+                  <th>Email / WhatsApp</th>
+                  <th>Cantidad de Compras</th>
+                  <th>Monto Total Invertido</th>
+                </tr>
+              </thead>
+              <tbody id="repTopCustomersBody"></tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- ==================== TAB 9: GESTIÓN DE IMÁGENES ==================== -->
+        <div id="tabGallery" class="tab-pane" style="display:none">
+          <div class="admin-toolbar" style="margin-bottom:1.2rem">
+            <div>
+              <strong style="font-size:1.1rem">Galería y Multimedia de Productos</strong>
+              <p style="font-size:0.8rem;color:var(--muted);margin:0">Subí fotos, definí la imagen principal de cada modelo y organizá el orden.</p>
+            </div>
+            <button class="btn btn-dark" id="btnNewImage">＋ Agregar Imagen a Galería</button>
+          </div>
+
+          <!-- Image Add Form -->
+          <div class="widget-box" id="galleryFormContainer" style="display:none;margin-bottom:1.2rem;background:#fcfbfa">
+            <div class="widget-title">Agregar Nueva Imagen al Catálogo</div>
+            <form id="adminGalleryForm">
+              <div class="form-grid">
+                <div class="form-group">
+                  <label>Ruta / URL de la Imagen</label>
+                  <input type="text" id="galImgUrl" class="form-control" required placeholder="assets/p1.jpg o https://..." />
+                </div>
+                <div class="form-group">
+                  <label>Título / Modelo Asociado</label>
+                  <input type="text" id="galTitle" class="form-control" required placeholder="Ej. Botineta Taupe Lateral" />
+                </div>
+                <div class="form-group">
+                  <label>Categoría</label>
+                  <select id="galCat" class="form-control">
+                    <option value="botas">Botas</option>
+                    <option value="zapatillas">Zapatillas</option>
+                    <option value="mules">Mules</option>
+                    <option value="local">Local / Destacados</option>
+                  </select>
+                </div>
+              </div>
+              <div style="display:flex;justify-content:flex-end;gap:0.5rem;margin-top:1rem">
+                <button type="button" class="btn btn-outline" id="btnCancelGalleryForm">Cancelar</button>
+                <button type="submit" class="btn btn-dark">Cargar Imagen</button>
+              </div>
+            </form>
+          </div>
+
+          <!-- Images Grid -->
+          <div style="display:grid;grid-template-columns:repeat(auto-fill, minmax(220px, 1fr));gap:1rem" id="adminGalleryGrid"></div>
+        </div>
+
+        <!-- ==================== TAB 10: NOTIFICACIONES ==================== -->
+        <div id="tabNotifs" class="tab-pane" style="display:none">
+          <div class="admin-toolbar" style="margin-bottom:1.2rem">
+            <div>
+              <strong style="font-size:1.1rem">Centro de Alertas y Notificaciones</strong>
+              <p style="font-size:0.8rem;color:var(--muted);margin:0">Avisos automáticos de compras, quiebres de stock y registros.</p>
+            </div>
+            <div style="display:flex;gap:0.5rem">
+              <button class="btn btn-outline" id="btnMarkNotifsRead">✓ Marcar todas como leídas</button>
+              <button class="btn btn-danger btn-sm" id="btnClearNotifs">🗑️ Limpiar Historial</button>
+            </div>
+          </div>
+
+          <div class="widget-box">
+            <div id="adminNotificationsList" style="display:flex;flex-direction:column;gap:0.8rem"></div>
+          </div>
+        </div>
     </div>
   </div>
 
@@ -2885,108 +3194,548 @@
     });
 
 
-    // -----------------------------------------------
-    // 5. GESTIÓN DE INVENTARIO
-    // -----------------------------------------------
-    function renderAdminInventory() {
-      let totalPairs = 0;
-      let totalValue = 0;
-      let lowAlerts = 0;
+    // ===============================================
+    // BASES DE DATOS & VALORES INICIALES TABS 6-10
+    // ===============================================
+    const defaultCustomers = [
+      { id: 1, name: "María González", email: "maria.gonzalez@gmail.com", phone: "2923-456789", address: "Av. San Martín 450, Pigüé", ordersCount: 3, totalSpent: 384700, status: "Activo" },
+      { id: 2, name: "Carlos Pérez", email: "carlos.perez@email.com", phone: "2923-987654", address: "Calle Belgrano 120, Pigüé", ordersCount: 2, totalSpent: 239800, status: "Activo" },
+      { id: 3, name: "Lucía Rossi", email: "lucia.rossi@gmail.com", phone: "291-5551234", address: "Moreno 890, Bahía Blanca", ordersCount: 4, totalSpent: 412000, status: "Activo" },
+      { id: 4, name: "Roberto Gómez", email: "rgomez@yahoo.com", phone: "2923-112233", address: "Rivadavia 310, Saavedra", ordersCount: 0, totalSpent: 0, status: "Bloqueado" }
+    ];
 
-      products.forEach(p => {
-        const stock = getProductTotalStock(p);
-        totalPairs += stock;
-        totalValue += stock * p.price;
-        if (stock < 4) lowAlerts++;
+    const defaultPromos = [
+      { id: 1, code: "IVONNE10", type: "porcentaje", value: 10, scope: "all", target: "Toda la Tienda", startDate: "2026-08-01", endDate: "2026-08-31", status: "Activa" },
+      { id: 2, code: "BOTAS2000", type: "monto", value: 2000, scope: "category", target: "botas", startDate: "2026-08-01", endDate: "2026-08-15", status: "Activa" },
+      { id: 3, code: "FILALOVER", type: "porcentaje", value: 15, scope: "brand", target: "FILA", startDate: "2026-08-01", endDate: "2026-09-30", status: "Activa" }
+    ];
+
+    const defaultGallery = [
+      { id: 1, url: "assets/p1.jpg", title: "Botineta Crisscross Taupe", category: "botas", isMain: true },
+      { id: 2, url: "assets/p2.jpg", title: "Chelsea Bordó Track", category: "botas", isMain: false },
+      { id: 3, url: "assets/p7.jpg", title: "FILA Soft Runner Black", category: "zapatillas", isMain: true },
+      { id: 4, url: "assets/p9.jpg", title: "Mule Negra Forrada Platform", category: "mules", isMain: true }
+    ];
+
+    const defaultNotifications = [
+      { id: 1, title: "⚠️ Poco Stock", text: "Quedan solo 2 pares de Chelsea Bordó Talle 37", date: "Hace 10 min", type: "stock", read: false },
+      { id: 2, title: "🛍️ Nueva Compra", text: "María González realizó el pedido #1001 por $134.900", date: "Hace 1 hora", type: "sale", read: false },
+      { id: 3, title: "👤 Nuevo Cliente", text: "Se registró Agustina Benítez en el sistema", date: "Hace 3 horas", type: "user", read: false },
+      { id: 4, title: "❌ Pedido Cancelado", text: "El pedido #998 fue cancelado por el cliente", date: "Ayer", type: "cancel", read: true }
+    ];
+
+    function loadCustomers() {
+      const stored = localStorage.getItem("ivonne_customers");
+      if (stored) { try { return JSON.parse(stored); } catch (e) {} }
+      return [...defaultCustomers];
+    }
+    function loadPromos() {
+      const stored = localStorage.getItem("ivonne_promos");
+      if (stored) { try { return JSON.parse(stored); } catch (e) {} }
+      return [...defaultPromos];
+    }
+    function loadGallery() {
+      const stored = localStorage.getItem("ivonne_gallery");
+      if (stored) { try { return JSON.parse(stored); } catch (e) {} }
+      return [...defaultGallery];
+    }
+    function loadNotifications() {
+      const stored = localStorage.getItem("ivonne_notifications");
+      if (stored) { try { return JSON.parse(stored); } catch (e) {} }
+      return [...defaultNotifications];
+    }
+
+    let customers = loadCustomers();
+    let promos = loadPromos();
+    let gallery = loadGallery();
+    let notifications = loadNotifications();
+
+    function saveCustomersStorage() { localStorage.setItem("ivonne_customers", JSON.stringify(customers)); }
+    function savePromosStorage() { localStorage.setItem("ivonne_promos", JSON.stringify(promos)); }
+    function saveGalleryStorage() { localStorage.setItem("ivonne_gallery", JSON.stringify(gallery)); }
+    function saveNotificationsStorage() { localStorage.setItem("ivonne_notifications", JSON.stringify(notifications)); }
+
+    // Cambiador de Pestañas (10 Tabs)
+    function switchAdminTab(tabName) {
+      document.querySelectorAll(".admin-tab").forEach((b) => {
+        b.classList.toggle("active", b.dataset.tab === tabName);
       });
 
-      document.getElementById("invTotalPairs").textContent = `${totalPairs} pares`;
-      document.getElementById("invTotalValue").textContent = money(totalValue);
-      document.getElementById("invLowStockAlerts").textContent = `${lowAlerts} modelos`;
+      document.querySelectorAll(".tab-pane").forEach((pane) => {
+        pane.style.display = "none";
+      });
 
-      const invTableBody = document.getElementById("adminInventoryTableBody");
-      invTableBody.innerHTML = products.map(p => {
-        const totalStock = getProductTotalStock(p);
-        const stockObj = p.stockPerSize || {};
+      if (tabName === "dash") {
+        document.getElementById("tabDash").style.display = "block";
+        renderDashboard();
+      } else if (tabName === "products") {
+        document.getElementById("tabProducts").style.display = "block";
+        renderAdminProducts();
+      } else if (tabName === "categories") {
+        document.getElementById("tabCategories").style.display = "block";
+        renderAdminCategories();
+      } else if (tabName === "brands") {
+        document.getElementById("tabBrands").style.display = "block";
+        renderAdminBrands();
+      } else if (tabName === "inventory") {
+        document.getElementById("tabInventory").style.display = "block";
+        renderAdminInventory();
+      } else if (tabName === "customers") {
+        document.getElementById("tabCustomers").style.display = "block";
+        renderAdminCustomers();
+      } else if (tabName === "promos") {
+        document.getElementById("tabPromos").style.display = "block";
+        renderAdminPromos();
+      } else if (tabName === "reports") {
+        document.getElementById("tabReports").style.display = "block";
+        renderAdminReports();
+      } else if (tabName === "gallery") {
+        document.getElementById("tabGallery").style.display = "block";
+        renderAdminGallery();
+      } else if (tabName === "notifs") {
+        document.getElementById("tabNotifs").style.display = "block";
+        renderAdminNotifications();
+      }
+    }
 
-        const sizesBadges = Object.keys(stockObj).map(s => {
-          const q = stockObj[s];
-          if (q <= 0) return `<small style="color:var(--muted);margin-right:4px">T${s}:0</small>`;
-          return `<span style="font-size:0.75rem;font-weight:700;background:var(--bg-soft);padding:0.1rem 0.35rem;border-radius:4px;margin-right:4px">${s}: ${q}u</span>`;
-        }).join("");
 
-        return `
-          <tr>
-            <td>
-              <div style="display:flex;align-items:center;gap:0.6rem">
-                <img src="${p.img}" class="admin-thumb" style="width:36px;height:36px" alt="" />
-                <div>
-                  <strong>${p.name}</strong><br/>
-                  <small style="color:var(--muted)">SKU: ${p.sku || 'N/A'}</small>
-                </div>
-              </div>
-            </td>
-            <td>${sizesBadges}</td>
-            <td>
-              <strong style="font-size:1.05rem;color:${totalStock < 4 ? 'var(--accent)' : 'var(--ink)'}">
-                ${totalStock} pares
-              </strong>
-            </td>
-            <td>
-              <div style="display:flex;gap:0.4rem">
-                <button class="btn btn-outline btn-sm" onclick="adjustProductStock(${p.id}, -1)">− 1 par</button>
-                <button class="btn btn-dark btn-sm" onclick="adjustProductStock(${p.id}, 1)">＋ 1 par</button>
-              </div>
-            </td>
-          </tr>
-        `;
-      }).join("");
+    // -----------------------------------------------
+    // 6. GESTIÓN DE CLIENTES
+    // -----------------------------------------------
+    const customerSearchInput = document.getElementById("customerSearchInput");
+    const customerFilterStatus = document.getElementById("customerFilterStatus");
+    const btnNewCustomer = document.getElementById("btnNewCustomer");
+    const customerFormContainer = document.getElementById("customerFormContainer");
+    const adminCustomerForm = document.getElementById("adminCustomerForm");
+    const customerFormTitle = document.getElementById("customerFormTitle");
+    const btnCancelCustForm = document.getElementById("btnCancelCustForm");
+    const adminCustomerTableBody = document.getElementById("adminCustomerTableBody");
 
-      // Historial de Movimientos
-      const logBody = document.getElementById("inventoryLogTableBody");
-      logBody.innerHTML = stockLogs.map(l => `
+    function renderAdminCustomers() {
+      const q = customerSearchInput.value.trim().toLowerCase();
+      const st = customerFilterStatus.value;
+
+      const filtered = customers.filter(c => {
+        const matchSearch = !q || c.name.toLowerCase().includes(q) || c.email.toLowerCase().includes(q) || c.phone.includes(q);
+        const matchStatus = st === "all" || c.status === st;
+        return matchSearch && matchStatus;
+      });
+
+      adminCustomerTableBody.innerHTML = filtered.map(c => `
         <tr>
-          <td><small style="color:var(--muted)">${l.date}</small></td>
-          <td><strong>${l.product}</strong></td>
-          <td><span class="badge ${l.type === 'Ingreso' ? 'new' : 'sale'}">${l.type}</span></td>
-          <td>${l.detail}</td>
+          <td>
+            <strong>${c.name}</strong><br/>
+            <small style="color:var(--muted)">ID: #${c.id}</small>
+          </td>
+          <td>
+            📧 ${c.email}<br/>
+            📱 ${c.phone}
+          </td>
+          <td><small style="color:var(--muted)">${c.address || 'Sin especificar'}</small></td>
+          <td>
+            <strong>${c.ordersCount || 0} compras</strong><br/>
+            <small style="color:var(--ok)">Total: ${money(c.totalSpent || 0)}</small>
+          </td>
+          <td>
+            <span class="status-badge ${c.status === 'Activo' ? 'active' : 'out'}">
+              ${c.status === 'Activo' ? '🟢 Activo' : '🔴 Bloqueado'}
+            </span>
+          </td>
+          <td style="text-align:right">
+            <button class="btn btn-outline btn-sm" onclick="toggleCustomerBlock(${c.id})">
+              ${c.status === 'Activo' ? '🔒 Bloquear' : '🔓 Desbloquear'}
+            </button>
+            <button class="btn btn-outline btn-sm" onclick="editCustomer(${c.id})">✏️ Editar</button>
+            <button class="btn btn-dark btn-sm" onclick="showCustomerPurchases(${c.id})">🛍️ Compras</button>
+          </td>
         </tr>
       `).join("");
     }
 
-    window.adjustProductStock = function(id, delta) {
-      const p = products.find(x => x.id === id);
-      if (!p) return;
-      if (!p.stockPerSize) {
-        p.stockPerSize = { "35": 2, "36": 2, "37": 2, "38": 2, "39": 2, "40": 0, "41": 0 };
+    [customerSearchInput, customerFilterStatus].forEach(el => {
+      el.addEventListener("input", renderAdminCustomers);
+      el.addEventListener("change", renderAdminCustomers);
+    });
+
+    btnNewCustomer.addEventListener("click", () => {
+      customerFormTitle.textContent = "Registrar Nuevo Cliente";
+      adminCustomerForm.reset();
+      document.getElementById("customerId").value = "";
+      customerFormContainer.style.display = "block";
+    });
+
+    btnCancelCustForm.addEventListener("click", () => {
+      customerFormContainer.style.display = "none";
+    });
+
+    window.editCustomer = function(id) {
+      const c = customers.find(x => x.id === id);
+      if (!c) return;
+      customerFormTitle.textContent = `Editar Cliente: ${c.name}`;
+      document.getElementById("customerId").value = c.id;
+      document.getElementById("custName").value = c.name;
+      document.getElementById("custEmail").value = c.email;
+      document.getElementById("custPhone").value = c.phone;
+      document.getElementById("custAddress").value = c.address || "";
+      document.getElementById("custStatus").value = c.status || "Activo";
+      customerFormContainer.style.display = "block";
+    };
+
+    window.toggleCustomerBlock = function(id) {
+      const c = customers.find(x => x.id === id);
+      if (!c) return;
+      c.status = c.status === "Activo" ? "Bloqueado" : "Activo";
+      saveCustomersStorage();
+      renderAdminCustomers();
+      showToast(`Estado de ${c.name} actualizado`);
+    };
+
+    window.showCustomerPurchases = function(id) {
+      const c = customers.find(x => x.id === id);
+      if (!c) return;
+      alert(`Historial de Compras de ${c.name}:\n\n• Pedidos Realizados: ${c.ordersCount || 0}\n• Monto Acumulado: ${money(c.totalSpent || 0)}\n• Dirección Principal: ${c.address}`);
+    };
+
+    adminCustomerForm.addEventListener("submit", (e) => {
+      e.preventDefault();
+      const idVal = document.getElementById("customerId").value;
+      const name = document.getElementById("custName").value.trim();
+      const email = document.getElementById("custEmail").value.trim();
+      const phone = document.getElementById("custPhone").value.trim();
+      const address = document.getElementById("custAddress").value.trim();
+      const status = document.getElementById("custStatus").value;
+
+      if (idVal) {
+        const c = customers.find(x => x.id === Number(idVal));
+        if (c) {
+          c.name = name;
+          c.email = email;
+          c.phone = phone;
+          c.address = address;
+          c.status = status;
+        }
+      } else {
+        const newId = customers.length ? Math.max(...customers.map(c => c.id)) + 1 : 1;
+        customers.push({ id: newId, name, email, phone, address, status, ordersCount: 0, totalSpent: 0 });
       }
 
-      // Sumar o restar en talle 37 o 38 por defecto
-      const mainSize = (p.sizes && p.sizes.length) ? p.sizes[0] : 37;
-      p.stockPerSize[mainSize] = Math.max(0, (p.stockPerSize[mainSize] || 0) + delta);
+      saveCustomersStorage();
+      customerFormContainer.style.display = "none";
+      renderAdminCustomers();
+      showToast("Cliente guardado con éxito");
+    });
 
-      // Registrar movimiento
-      const now = new Date();
-      const dateStr = `${now.toLocaleDateString("es-AR")} ${now.toLocaleTimeString("es-AR", {hour:'2-digit', minute:'2-digit'})}`;
-      stockLogs.unshift({
-        date: dateStr,
-        product: p.name,
-        type: delta > 0 ? "Ingreso" : "Ajuste / Venta",
-        detail: `Ajuste manual stock Talle ${mainSize} (${delta > 0 ? '+' : ''}${delta} u.)`
+
+    // -----------------------------------------------
+    // 7. GESTIÓN DE PROMOCIONES
+    // -----------------------------------------------
+    const btnNewPromo = document.getElementById("btnNewPromo");
+    const promoFormContainer = document.getElementById("promoFormContainer");
+    const adminPromoForm = document.getElementById("adminPromoForm");
+    const promoFormTitle = document.getElementById("promoFormTitle");
+    const btnCancelPromoForm = document.getElementById("btnCancelPromoForm");
+    const adminPromoTableBody = document.getElementById("adminPromoTableBody");
+
+    function renderAdminPromos() {
+      adminPromoTableBody.innerHTML = promos.map(p => `
+        <tr>
+          <td>
+            <span class="badge brand" style="font-size:0.85rem;letter-spacing:1px">🎟️ ${p.code}</span>
+          </td>
+          <td>
+            <strong>${p.type === 'porcentaje' ? `${p.value}% OFF` : money(p.value) + ' OFF'}</strong>
+          </td>
+          <td>
+            <small style="color:var(--muted)">${p.scope === 'all' ? 'Toda la tienda' : p.target}</small>
+          </td>
+          <td>
+            <small style="color:var(--muted)">${p.startDate} al ${p.endDate}</small>
+          </td>
+          <td>
+            <span class="status-badge ${p.status === 'Activa' ? 'active' : 'disabled'}">
+              ${p.status === 'Activa' ? '🟢 Activa' : '⚪ Inactiva'}
+            </span>
+          </td>
+          <td style="text-align:right">
+            <button class="btn btn-outline btn-sm" onclick="togglePromoStatus(${p.id})">
+              ${p.status === 'Activa' ? 'Desactivar' : 'Activar'}
+            </button>
+            <button class="btn btn-outline btn-sm" onclick="editPromo(${p.id})">✏️ Editar</button>
+            <button class="btn btn-danger btn-sm" onclick="deletePromo(${p.id})">🗑️ Eliminar</button>
+          </td>
+        </tr>
+      `).join("");
+    }
+
+    btnNewPromo.addEventListener("click", () => {
+      promoFormTitle.textContent = "Crear Nueva Promoción";
+      adminPromoForm.reset();
+      document.getElementById("promoId").value = "";
+      document.getElementById("promoStartDate").value = new Date().toISOString().split('T')[0];
+      document.getElementById("promoEndDate").value = new Date(Date.now() + 30*24*3600*1000).toISOString().split('T')[0];
+      promoFormContainer.style.display = "block";
+    });
+
+    btnCancelPromoForm.addEventListener("click", () => {
+      promoFormContainer.style.display = "none";
+    });
+
+    window.editPromo = function(id) {
+      const p = promos.find(x => x.id === id);
+      if (!p) return;
+      promoFormTitle.textContent = `Editar Cupón: ${p.code}`;
+      document.getElementById("promoId").value = p.id;
+      document.getElementById("promoCode").value = p.code;
+      document.getElementById("promoType").value = p.type;
+      document.getElementById("promoValue").value = p.value;
+      document.getElementById("promoScope").value = p.scope;
+      document.getElementById("promoTarget").value = p.target || "";
+      document.getElementById("promoStatus").value = p.status;
+      document.getElementById("promoStartDate").value = p.startDate;
+      document.getElementById("promoEndDate").value = p.endDate;
+      promoFormContainer.style.display = "block";
+    };
+
+    window.togglePromoStatus = function(id) {
+      const p = promos.find(x => x.id === id);
+      if (!p) return;
+      p.status = p.status === "Activa" ? "Inactiva" : "Activa";
+      savePromosStorage();
+      renderAdminPromos();
+      showToast(`Estado de ${p.code} actualizado`);
+    };
+
+    window.deletePromo = function(id) {
+      if (confirm("¿Estás seguro de eliminar este cupón?")) {
+        promos = promos.filter(p => p.id !== id);
+        savePromosStorage();
+        renderAdminPromos();
+        showToast("Promoción eliminada");
+      }
+    };
+
+    adminPromoForm.addEventListener("submit", (e) => {
+      e.preventDefault();
+      const idVal = document.getElementById("promoId").value;
+      const code = document.getElementById("promoCode").value.trim().toUpperCase();
+      const type = document.getElementById("promoType").value;
+      const value = Number(document.getElementById("promoValue").value);
+      const scope = document.getElementById("promoScope").value;
+      const target = document.getElementById("promoTarget").value.trim() || "Toda la Tienda";
+      const status = document.getElementById("promoStatus").value;
+      const startDate = document.getElementById("promoStartDate").value;
+      const endDate = document.getElementById("promoEndDate").value;
+
+      if (idVal) {
+        const p = promos.find(x => x.id === Number(idVal));
+        if (p) {
+          p.code = code;
+          p.type = type;
+          p.value = value;
+          p.scope = scope;
+          p.target = target;
+          p.status = status;
+          p.startDate = startDate;
+          p.endDate = endDate;
+        }
+      } else {
+        const newId = promos.length ? Math.max(...promos.map(p => p.id)) + 1 : 1;
+        promos.push({ id: newId, code, type, value, scope, target, status, startDate, endDate });
+      }
+
+      savePromosStorage();
+      promoFormContainer.style.display = "none";
+      renderAdminPromos();
+      showToast("Cupón guardado con éxito");
+    });
+
+
+    // -----------------------------------------------
+    // 8. REPORTES & EXPORTACIÓN
+    // -----------------------------------------------
+    function renderAdminReports() {
+      // Top productos y menos vendidos
+      const sortedProds = [...products].sort((a, b) => getProductTotalStock(b) - getProductTotalStock(a));
+      
+      const topProdsBody = document.getElementById("repTopProductsBody");
+      topProdsBody.innerHTML = sortedProds.slice(0, 5).map(p => `
+        <tr>
+          <td>
+            <div style="display:flex;align-items:center;gap:0.5rem">
+              <img src="${p.img}" class="admin-thumb" style="width:30px;height:30px" alt="" />
+              <span>${p.name}</span>
+            </div>
+          </td>
+          <td><strong>${Math.floor(Math.random() * 15 + 5)} u.</strong></td>
+          <td>${money(p.price * 8)}</td>
+        </tr>
+      `).join("");
+
+      const lowProdsBody = document.getElementById("repLowProductsBody");
+      lowProdsBody.innerHTML = sortedProds.slice(-5).map(p => `
+        <tr>
+          <td>${p.name}</td>
+          <td><strong>${getProductTotalStock(p)} pares</strong></td>
+          <td><span class="status-badge ${getProductTotalStock(p) < 4 ? 'out' : 'active'}">${getProductTotalStock(p) < 4 ? 'Bajo' : 'Normal'}</span></td>
+        </tr>
+      `).join("");
+
+      // Clientes frecuentes
+      const topCustBody = document.getElementById("repTopCustomersBody");
+      topCustBody.innerHTML = customers.map(c => `
+        <tr>
+          <td><strong>${c.name}</strong></td>
+          <td>${c.email} / ${c.phone}</td>
+          <td><strong>${c.ordersCount || 0} compras</strong></td>
+          <td><strong style="color:var(--ok)">${money(c.totalSpent || 0)}</strong></td>
+        </tr>
+      `).join("");
+    }
+
+    // Exportar a CSV
+    document.getElementById("btnExportCSV").addEventListener("click", () => {
+      let csvContent = "data:text/csv;charset=utf-8,";
+      csvContent += "ID,SKU,Nombre,Categoria,Marca,Precio,StockTotal,Estado\n";
+
+      products.forEach(p => {
+        const totalStock = getProductTotalStock(p);
+        csvContent += `${p.id},"${p.sku || ''}","${p.name}","${p.category}","${p.brand || ''}",${p.price},${totalStock},"${p.status}"\n`;
       });
 
-      saveProductsStorage();
-      saveStockLogsStorage();
-      renderAdminInventory();
-      renderProducts();
-      showToast(`Stock de ${p.name} actualizado`);
+      const encodedUri = encodeURI(csvContent);
+      const link = document.createElement("a");
+      link.setAttribute("href", encodedUri);
+      link.setAttribute("download", `reporte_inventario_ivonne_${new Date().toISOString().split('T')[0]}.csv`);
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      showToast("Reporte CSV descargado con éxito");
+    });
+
+    // Exportar PDF / Imprimir
+    document.getElementById("btnPrintReport").addEventListener("click", () => {
+      window.print();
+    });
+
+
+    // -----------------------------------------------
+    // 9. GESTIÓN DE IMÁGENES
+    // -----------------------------------------------
+    const btnNewImage = document.getElementById("btnNewImage");
+    const galleryFormContainer = document.getElementById("galleryFormContainer");
+    const adminGalleryForm = document.getElementById("adminGalleryForm");
+    const btnCancelGalleryForm = document.getElementById("btnCancelGalleryForm");
+    const adminGalleryGrid = document.getElementById("adminGalleryGrid");
+
+    function renderAdminGallery() {
+      adminGalleryGrid.innerHTML = gallery.map(g => `
+        <div class="card" style="padding:0.6rem">
+          <div style="position:relative;border-radius:12px;overflow:hidden;height:160px;background:#eee;margin-bottom:0.5rem">
+            <img src="${g.url}" alt="${g.title}" style="width:100%;height:100%;object-fit:cover" />
+            ${g.isMain ? `<span class="badge brand" style="position:absolute;top:8px;left:8px">⭐ Principal</span>` : ''}
+          </div>
+          <strong style="font-size:0.85rem;display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${g.title}</strong>
+          <small style="color:var(--muted);display:block;margin-bottom:0.6rem;text-transform:uppercase">${g.category}</small>
+          <div style="display:flex;gap:0.4rem;flex-wrap:wrap">
+            <button class="btn btn-outline btn-sm" style="flex:1" onclick="setMainImage(${g.id})">⭐ Principal</button>
+            <button class="btn btn-danger btn-sm" onclick="deleteGalleryImage(${g.id})">🗑️</button>
+          </div>
+        </div>
+      `).join("");
+    }
+
+    btnNewImage.addEventListener("click", () => {
+      adminGalleryForm.reset();
+      galleryFormContainer.style.display = "block";
+    });
+
+    btnCancelGalleryForm.addEventListener("click", () => {
+      galleryFormContainer.style.display = "none";
+    });
+
+    window.setMainImage = function(id) {
+      gallery.forEach(g => g.isMain = (g.id === id));
+      saveGalleryStorage();
+      renderAdminGallery();
+      showToast("Imagen principal actualizada");
     };
+
+    window.deleteGalleryImage = function(id) {
+      if (confirm("¿Estás seguro de eliminar esta imagen?")) {
+        gallery = gallery.filter(g => g.id !== id);
+        saveGalleryStorage();
+        renderAdminGallery();
+        showToast("Imagen eliminada");
+      }
+    };
+
+    adminGalleryForm.addEventListener("submit", (e) => {
+      e.preventDefault();
+      const url = document.getElementById("galImgUrl").value.trim();
+      const title = document.getElementById("galTitle").value.trim();
+      const category = document.getElementById("galCat").value;
+
+      const newId = gallery.length ? Math.max(...gallery.map(g => g.id)) + 1 : 1;
+      gallery.push({ id: newId, url, title, category, isMain: gallery.length === 0 });
+
+      saveGalleryStorage();
+      galleryFormContainer.style.display = "none";
+      renderAdminGallery();
+      showToast("Imagen agregada a la galería");
+    });
+
+
+    // -----------------------------------------------
+    // 10. NOTIFICACIONES DEL SISTEMA
+    // -----------------------------------------------
+    const notifBadgeCount = document.getElementById("notifBadgeCount");
+    const adminNotificationsList = document.getElementById("adminNotificationsList");
+    const btnMarkNotifsRead = document.getElementById("btnMarkNotifsRead");
+    const btnClearNotifs = document.getElementById("btnClearNotifs");
+
+    function renderAdminNotifications() {
+      const unreadCount = notifications.filter(n => !n.read).length;
+      notifBadgeCount.textContent = unreadCount;
+      notifBadgeCount.style.display = unreadCount > 0 ? "inline-flex" : "none";
+
+      if (!notifications.length) {
+        adminNotificationsList.innerHTML = `<div style="text-align:center;padding:2rem;color:var(--muted)">No hay notificaciones en el sistema.</div>`;
+        return;
+      }
+
+      adminNotificationsList.innerHTML = notifications.map(n => `
+        <div style="display:flex;align-items:center;justify-content:space-between;padding:0.8rem 1rem;border-radius:12px;background:${n.read ? 'var(--bg)' : '#fef8f7'};border:1px solid ${n.read ? 'var(--line)' : '#f5c2c7'}">
+          <div style="display:flex;align-items:center;gap:0.8rem">
+            <span style="font-size:1.4rem">${n.type === 'stock' ? '⚠️' : n.type === 'sale' ? '🛍️' : n.type === 'user' ? '👤' : '❌'}</span>
+            <div>
+              <strong style="font-size:0.9rem">${n.title}</strong>
+              <p style="margin:0;font-size:0.82rem;color:var(--muted)">${n.text}</p>
+            </div>
+          </div>
+          <small style="color:var(--muted)">${n.date}</small>
+        </div>
+      `).join("");
+    }
+
+    btnMarkNotifsRead.addEventListener("click", () => {
+      notifications.forEach(n => n.read = true);
+      saveNotificationsStorage();
+      renderAdminNotifications();
+      showToast("Todas las notificaciones marcadas como leídas");
+    });
+
+    btnClearNotifs.addEventListener("click", () => {
+      if (confirm("¿Limpiar historial de notificaciones?")) {
+        notifications = [];
+        saveNotificationsStorage();
+        renderAdminNotifications();
+        showToast("Notificaciones limpiadas");
+      }
+    });
 
     // Inicialización al cargar la página
     renderProducts();
     renderCart();
   </script>
-</body>
-</html>
 </body>
 </html>
