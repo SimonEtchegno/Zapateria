@@ -843,10 +843,10 @@
     .modal-admin {
       position: fixed;
       inset: 0;
-      z-index: 100;
-      background: rgba(17, 17, 17, 0.7);
+      z-index: 99999;
+      background: rgba(17, 17, 17, 0.75);
       backdrop-filter: blur(8px);
-      display: flex;
+      display: none;
       align-items: center;
       justify-content: center;
       padding: 1rem;
@@ -855,8 +855,9 @@
       transition: opacity 0.25s ease;
     }
     .modal-admin.open {
-      opacity: 1;
-      pointer-events: auto;
+      display: flex !important;
+      opacity: 1 !important;
+      pointer-events: auto !important;
     }
     .modal-admin-content {
       background: var(--white);
@@ -1255,7 +1256,7 @@
         <a href="#contacto">Contacto</a>
       </div>
       <div class="nav-actions">
-        <button class="icon-btn" id="openAdminBtn" aria-label="Panel Administrador" title="Panel Administrador">
+        <button class="icon-btn" id="openAdminBtn" aria-label="Panel Administrador" title="Panel Administrador" onclick="openAdminAuth()">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
         </button>
         <a class="icon-btn" href="https://www.instagram.com/calzadoivonne/" target="_blank" rel="noopener" aria-label="Instagram" title="Instagram">
@@ -2895,7 +2896,7 @@
 
 
     // ===============================================
-    // LÓGICA DEL PANEL DE ADMINISTRACIÓN (5 SECCIONES)
+    // LÓGICA DEL PANEL DE ADMINISTRACIÓN
     // ===============================================
     const openAdminBtn = document.getElementById("openAdminBtn");
     const adminAuthModal = document.getElementById("adminAuthModal");
@@ -2906,14 +2907,25 @@
     const adminModal = document.getElementById("adminModal");
     const closeAdminBtn = document.getElementById("closeAdminBtn");
 
+    window.openAdminAuth = function() {
+      if (adminAuthModal) {
+        adminAuthModal.classList.add("open");
+        if (adminPassInput) adminPassInput.focus();
+      } else {
+        window.openAdminDashboard();
+      }
+    };
+
+    window.openAdminDashboard = function() {
+      if (adminAuthModal) adminAuthModal.classList.remove("open");
+      if (adminModal) adminModal.classList.add("open");
+      switchAdminTab("dash", "📊 Dashboard");
+    };
+
     if (openAdminBtn) {
-      openAdminBtn.addEventListener("click", () => {
-        if (adminAuthModal) {
-          adminAuthModal.classList.add("open");
-          if (adminPassInput) adminPassInput.focus();
-        } else {
-          openAdminDashboard();
-        }
+      openAdminBtn.addEventListener("click", (e) => {
+        e.preventDefault();
+        window.openAdminAuth();
       });
     }
 
@@ -2930,16 +2942,11 @@
         if (pass === "admin" || pass === "1234" || pass === "") {
           if (adminAuthModal) adminAuthModal.classList.remove("open");
           if (adminPassInput) adminPassInput.value = "";
-          openAdminDashboard();
+          window.openAdminDashboard();
         } else {
           alert("Contraseña incorrecta (la contraseña por defecto es 'admin')");
         }
       });
-    }
-
-    function openAdminDashboard() {
-      if (adminModal) adminModal.classList.add("open");
-      switchAdminTab("dash", "📊 Dashboard");
     }
 
     if (closeAdminBtn) {
@@ -3155,19 +3162,6 @@
     btnCancelForm.addEventListener("click", () => {
       adminFormContainer.style.display = "none";
     });
-
-    const btnResetProducts = document.getElementById("btnResetProducts");
-    if (btnResetProducts) {
-      btnResetProducts.addEventListener("click", () => {
-        if (confirm("¿Restablecer el catálogo al estado predeterminado?")) {
-          products = [...defaultProducts];
-          saveProductsStorage();
-          renderAdminProducts();
-          renderProducts();
-          showToast("Catálogo restablecido al estado inicial");
-        }
-      });
-    }
 
     function fillProductFormSelects() {
       const prodCategorySelect = document.getElementById("prodCategory");
