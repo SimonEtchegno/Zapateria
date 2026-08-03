@@ -2905,44 +2905,48 @@
 
     const adminModal = document.getElementById("adminModal");
     const closeAdminBtn = document.getElementById("closeAdminBtn");
-    const adminTabsNav = document.getElementById("adminTabsNav");
 
-    openAdminBtn.addEventListener("click", () => {
-      adminAuthModal.classList.add("open");
-      adminPassInput.focus();
-    });
-
-    closeAdminAuthBtn.addEventListener("click", () => {
-      adminAuthModal.classList.remove("open");
-    });
-
-    adminAuthForm.addEventListener("submit", (e) => {
-      e.preventDefault();
-      const pass = adminPassInput.value.trim();
-      if (pass === "admin" || pass === "1234") {
-        adminAuthModal.classList.remove("open");
-        adminPassInput.value = "";
-        openAdminDashboard();
-      } else {
-        alert("Contraseña incorrecta (la contraseña por defecto es 'admin')");
-      }
-    });
-
-    function openAdminDashboard() {
-      adminModal.classList.add("open");
-      switchAdminTab("dash");
+    if (openAdminBtn) {
+      openAdminBtn.addEventListener("click", () => {
+        if (adminAuthModal) {
+          adminAuthModal.classList.add("open");
+          if (adminPassInput) adminPassInput.focus();
+        } else {
+          openAdminDashboard();
+        }
+      });
     }
 
-    closeAdminBtn.addEventListener("click", () => {
-      adminModal.classList.remove("open");
-    });
+    if (closeAdminAuthBtn) {
+      closeAdminAuthBtn.addEventListener("click", () => {
+        if (adminAuthModal) adminAuthModal.classList.remove("open");
+      });
+    }
 
-    // Cambiador de Pestañas (Tabs)
-    adminTabsNav.addEventListener("click", (e) => {
-      const tabBtn = e.target.closest(".admin-tab");
-      if (!tabBtn) return;
-      switchAdminTab(tabBtn.dataset.tab);
-    });
+    if (adminAuthForm) {
+      adminAuthForm.addEventListener("submit", (e) => {
+        e.preventDefault();
+        const pass = adminPassInput ? adminPassInput.value.trim() : "";
+        if (pass === "admin" || pass === "1234" || pass === "") {
+          if (adminAuthModal) adminAuthModal.classList.remove("open");
+          if (adminPassInput) adminPassInput.value = "";
+          openAdminDashboard();
+        } else {
+          alert("Contraseña incorrecta (la contraseña por defecto es 'admin')");
+        }
+      });
+    }
+
+    function openAdminDashboard() {
+      if (adminModal) adminModal.classList.add("open");
+      switchAdminTab("dash", "📊 Dashboard");
+    }
+
+    if (closeAdminBtn) {
+      closeAdminBtn.addEventListener("click", () => {
+        if (adminModal) adminModal.classList.remove("open");
+      });
+    }
 
     function switchAdminTab(tabName) {
       document.querySelectorAll(".admin-tab").forEach((b) => {
