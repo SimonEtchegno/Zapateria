@@ -1551,6 +1551,14 @@
         <div class="admin-body">
         <!-- ==================== TAB 1: DASHBOARD ==================== -->
         <div id="tabDash" class="tab-pane">
+          <!-- Quick Action Buttons -->
+          <div style="display:flex;gap:0.8rem;margin-bottom:1.2rem;flex-wrap:wrap">
+            <button class="btn btn-dark" onclick="switchAdminTab('products', '📦 Productos · Agregar'); document.getElementById('btnNewProduct').click();">➕ Nuevo Producto</button>
+            <button class="btn btn-outline" onclick="switchAdminTab('orders', '🛍️ Pedidos · Todos', 'all');">🛍️ Ver Pedidos</button>
+            <button class="btn btn-outline" onclick="switchAdminTab('inventory', '📋 Inventario');">📋 Ajustar Inventario</button>
+            <button class="btn btn-outline" onclick="switchAdminTab('reports', '📈 Reportes');">📈 Ver Reportes</button>
+          </div>
+
           <!-- KPIs Top Grid -->
           <div class="kpi-grid">
             <div class="kpi-card">
@@ -3143,6 +3151,19 @@
     btnCancelForm.addEventListener("click", () => {
       adminFormContainer.style.display = "none";
     });
+
+    const btnResetProducts = document.getElementById("btnResetProducts");
+    if (btnResetProducts) {
+      btnResetProducts.addEventListener("click", () => {
+        if (confirm("¿Restablecer el catálogo al estado predeterminado?")) {
+          products = [...defaultProducts];
+          saveProductsStorage();
+          renderAdminProducts();
+          renderProducts();
+          showToast("Catálogo restablecido al estado inicial");
+        }
+      });
+    }
 
     function fillProductFormSelects() {
       const prodCategorySelect = document.getElementById("prodCategory");
