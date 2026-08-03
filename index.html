@@ -990,7 +990,6 @@
       <div class="nav-links">
         <a href="#catalogo">Catálogo</a>
         <a href="#categorias">Categorías</a>
-        <a href="#talles">Guía de Talles</a>
         <a href="#instagram">Instagram</a>
         <a href="#contacto">Contacto</a>
       </div>
@@ -1085,75 +1084,6 @@
         </div>
 
         <div class="grid" id="productGrid"></div>
-      </div>
-    </section>
-
-    <!-- Guía de Talles Section -->
-    <section class="section" id="talles">
-      <div class="container">
-        <div class="section-head">
-          <div>
-            <h2>Guía de Talles</h2>
-            <p>Encontrá tu medida exacta de plantilla para elegir con total tranquilidad.</p>
-          </div>
-        </div>
-
-        <div class="size-guide-card">
-          <!-- Calculadora de Talle -->
-          <div class="calc-box">
-            <div>
-              <h3 style="font-family:var(--display);font-size:1.4rem;font-weight:600;margin-bottom:0.2rem">Calculá tu talle ideal</h3>
-              <p style="color:var(--muted);font-size:0.88rem">Ingresá la medida en cm del largo de tu plantilla o pie:</p>
-            </div>
-            <div class="calc-input-group">
-              <input type="number" id="cmInput" step="0.1" min="20" max="30" placeholder="Ej: 23.8" />
-              <span>cm</span>
-              <div class="calc-result" id="calcResult">Tu talle es: —</div>
-            </div>
-          </div>
-
-          <!-- Tabla de Medidas -->
-          <div class="size-table-wrapper">
-            <table class="size-table">
-              <thead>
-                <tr>
-                  <th>Talle ARG</th>
-                  <th>Medida de Plantilla (cm)</th>
-                  <th>Recomendación de Calce</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr><td><strong>35</strong></td><td>22.5 cm</td><td>Horma estándar / Pie angosto</td></tr>
-                <tr><td><strong>36</strong></td><td>23.0 cm</td><td>Horma estándar</td></tr>
-                <tr><td><strong>37</strong></td><td>23.8 cm</td><td>Horma estándar</td></tr>
-                <tr><td><strong>38</strong></td><td>24.5 cm</td><td>Horma estándar / Confortable</td></tr>
-                <tr><td><strong>39</strong></td><td>25.2 cm</td><td>Horma holgada</td></tr>
-                <tr><td><strong>40</strong></td><td>26.0 cm</td><td>Recomendado para zapatillas urbanas</td></tr>
-                <tr><td><strong>41</strong></td><td>26.7 cm</td><td>Deportivas y confort amplio</td></tr>
-              </tbody>
-            </table>
-          </div>
-
-          <!-- Pasos para medir -->
-          <h3 style="font-family:var(--display);font-size:1.4rem;font-weight:600;margin-bottom:1rem">¿Cómo medir tu pie correctamente?</h3>
-          <div class="how-to-grid">
-            <div class="how-step">
-              <div class="num">1</div>
-              <h4>Apoyá tu pie</h4>
-              <p>Colocá una hoja de papel en el suelo pegada a una pared. Pisá la hoja apoyando el talón contra la pared.</p>
-            </div>
-            <div class="how-step">
-              <div class="num">2</div>
-              <h4>Marcá la punta</h4>
-              <p>Con un lápiz vertical, marcá hasta dónde llega tu dedo más largo (generalmente el dedo gordo o el segundo).</p>
-            </div>
-            <div class="how-step">
-              <div class="num">3</div>
-              <h4>Medí la distancia</h4>
-              <p>Con una regla o cinta métrica, medí en centímetros desde el borde del talón hasta la marca que hiciste.</p>
-            </div>
-          </div>
-        </div>
       </div>
     </section>
 
@@ -1648,25 +1578,6 @@
       const text = encodeURIComponent(buildWhatsAppMessage());
       window.open(`https://wa.me/${WHATSAPP}?text=${text}`, "_blank");
     }
-
-    // Calculadora de Talle JS
-    document.getElementById("cmInput").addEventListener("input", (e) => {
-      const cm = parseFloat(e.target.value);
-      const res = document.getElementById("calcResult");
-      if (isNaN(cm) || cm <= 0) {
-        res.textContent = "Tu talle es: —";
-        return;
-      }
-      let talle = "";
-      if (cm <= 22.7) talle = "35";
-      else if (cm <= 23.4) talle = "36";
-      else if (cm <= 24.1) talle = "37";
-      else if (cm <= 24.8) talle = "38";
-      else if (cm <= 25.6) talle = "39";
-      else if (cm <= 26.3) talle = "40";
-      else talle = "41";
-      res.textContent = `Tu talle recomendado es: ${talle} (${cm} cm)`;
-    });
 
     // Eventos del catálogo
     document.getElementById("filters").addEventListener("click", (e) => {
